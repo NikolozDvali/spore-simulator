@@ -20,6 +20,9 @@ class Coordinate:
     def to_tuple(self) -> Tuple[int, ...]:
         return self.coords
 
+    def __getitem__(self, index: int) -> int:
+        return self.coords[index]
+
 class Entity(ABC):
     def __init__(self, coordinate: Coordinate = Coordinate()) -> None:
         self.coordinate = coordinate

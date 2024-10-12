@@ -3,54 +3,142 @@ from unittest.mock import MagicMock
 import pytest
 
 from game.core.common import Entity, Coordinate
-from game.world.world import World
+from game.world.world import LowerBounded1DWorld
 
 
-def test_default_world_is_empty():
-    assert len(World().entities) == 0
+def test_empty_limited_1d_world_entities():
+    assert LowerBounded1DWorld().entities == []
 
-def test_world_with_a_single_entity():
-    world = World()
+def test_add_valid_entity():
     mock_entity: Entity = MagicMock(spec=Entity)
-    world.add_entity(mock_entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
 
+    world = LowerBounded1DWorld()
+    world.add_entity(mock_entity)
     assert len(world.entities) == 1
 
-def test_world_get_entity_position():
-    world = World()
+def test_add_invalid_coordinate_entity():
     mock_entity: Entity = MagicMock(spec=Entity)
-    mock_entity.coordinate = (0, 0, 0)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: -1 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
+    with pytest.raises(ValueError):
+        world.add_entity(mock_entity)
+
+def test_add_entity_twice():
+    mock_entity: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
+    world.add_entity(mock_entity)
+    with pytest.raises(ValueError):
+        world.add_entity(mock_entity)
+
+def test_remove_existing_entity():
+    mock_entity: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
+    world.add_entity(mock_entity)
+    world.remove_entity(mock_entity)
+    assert len(world.entities) == 0
+
+def test_remove_non_existing_entity():
+    mock_entity: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
+    with pytest.raises(ValueError):
+        world.remove_entity(mock_entity)
+
+def test_remove_entity_twice():
+    mock_entity: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
+    world.add_entity(mock_entity)
+    world.remove_entity(mock_entity)
+    with pytest.raises(ValueError):
+        world.remove_entity(mock_entity)
+
+def test_move_existing_entity_to_valid_coordinate():
+    mock_entity: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
     world.add_entity(mock_entity)
 
-    assert world.get_entity_position(mock_entity) == (0, 0, 0)
+    mock_new_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_new_coordinate.__getitem__.side_effect = lambda index: 2 if index == 0 else None
 
-def test_world_get_entity_position_invalid():
-    world = World()
+    world.move_entity(mock_entity, mock_new_coordinate)
+    assert len(world.entities) == 1
+
+def test_move_existing_entity_to_invalid_coordinate():
     mock_entity: Entity = MagicMock(spec=Entity)
-    mock_entity.coordinate = (0, 0, 0)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
+    world.add_entity(mock_entity)
+
+    mock_new_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_new_coordinate.__getitem__.side_effect = lambda index: -1 if index == 0 else None
 
     with pytest.raises(ValueError):
-        world.get_entity_position(mock_entity)
+        world.move_entity(mock_entity, mock_new_coordinate)
 
-def test_world_get_entities_at_position():
-    world = World()
-    mock_entity_1: Entity = MagicMock(spec=Entity)
-    mock_entity_2: Entity = MagicMock(spec=Entity)
-    mock_entity_1.coordinate = Coordinate(0, 12, 0)
-    mock_entity_2.coordinate = Coordinate(0, 12, 0)
-    world.add_entity(mock_entity_1)
-    world.add_entity(mock_entity_2)
+def test_move_non_existing_entity():
+    mock_entity: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
 
-    assert sorted(world.get_entities_at_position(Coordinate(0, 12, 0)), key=id) == sorted([mock_entity_1, mock_entity_2], key=id)
+    world = LowerBounded1DWorld()
+    with pytest.raises(ValueError):
+        world.move_entity(mock_entity, mock_coordinate)
 
-def test_move_entity_in_the_world():
-    world = World()
-    entity = Entity(Coordinate(0, 0, 0))
+def test_no_entities_at_coordinate():
+    world = LowerBounded1DWorld()
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
 
-    world.add_entity(entity)
+    assert world.get_entities_at_coordinate(mock_coordinate) == []
 
-    new_position = Coordinate(1, 1, 1)
-    entity.update_position(new_position)
+def test_a_single_entity_at_coordinate():
+    mock_entity: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity.coordinate = mock_coordinate
 
-    assert world.get_entity_position(entity) == new_position
-    assert world.get_entities_at_position(new_position) == [entity]
+    world = LowerBounded1DWorld()
+    world.add_entity(mock_entity)
+    assert world.get_entities_at_coordinate(mock_coordinate) == [mock_entity]
+
+def test_multiple_entities_at_coordinate():
+    mock_entity1: Entity = MagicMock(spec=Entity)
+    mock_entity2: Entity = MagicMock(spec=Entity)
+    mock_coordinate: Coordinate = MagicMock(spec=Coordinate)
+    mock_coordinate.__getitem__.side_effect = lambda index: 0 if index == 0 else None
+    mock_entity1.coordinate = mock_coordinate
+    mock_entity2.coordinate = mock_coordinate
+
+    world = LowerBounded1DWorld()
+    world.add_entity(mock_entity1)
+    world.add_entity(mock_entity2)
+    assert world.get_entities_at_coordinate(mock_coordinate) == [mock_entity1, mock_entity2]
