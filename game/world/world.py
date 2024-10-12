@@ -1,9 +1,7 @@
-from typing import Protocol
+from typing import Dict
 
+from game.core.common import Entity, Coordinate
 
-class Coordinate(Protocol):
-    pass
-
-class Coordinate1D(Coordinate):
-    def __init__(self, x: int = 0):
-        self.x = x
+class World:
+    def __init__(self):
+        self.entities: Dict[Entity, Coordinate] = {}

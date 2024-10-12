@@ -1,7 +1,5 @@
-from abc import ABC
-
 from game.character.characteristics import Legs, Wings, Claws, Teeth
-from game.world.world import Coordinate, Coordinate1D
+from game.core.common import Entity
 from dataclasses import dataclass
 
 @dataclass
@@ -14,9 +12,6 @@ class CharacterConfig:
     claws: Claws = Claws()
     teeth: Teeth = Teeth()
 
-class Entity(ABC):
-    def __init__(self, coordinate: Coordinate = Coordinate1D()) -> None:
-        self.coordinate = coordinate
 
 class BaseCharacter(Entity):
     def __init__(self, base_health: int, base_attack_power: int, base_stamina: int) -> None:
