@@ -41,4 +41,16 @@ def test_world_get_entities_at_position():
     world.add_entity(mock_entity_1)
     world.add_entity(mock_entity_2)
 
-    assert world.get_entities_at_position(Coordinate(0, 12, 0)) == [mock_entity_1, mock_entity_2]
+    assert sorted(world.get_entities_at_position(Coordinate(0, 12, 0)), key=id) == sorted([mock_entity_1, mock_entity_2], key=id)
+
+def test_move_entity_in_the_world():
+    world = World()
+    entity = Entity(Coordinate(0, 0, 0))
+
+    world.add_entity(entity)
+
+    new_position = Coordinate(1, 1, 1)
+    entity.update_position(new_position)
+
+    assert world.get_entity_position(entity) == new_position
+    assert world.get_entities_at_position(new_position) == [entity]

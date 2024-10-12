@@ -14,6 +14,9 @@ class Coordinate:
             return self.coords == other.coords
         return False
 
+    def __str__(self) -> str:
+        return str(self.coords)
+
     def to_tuple(self) -> Tuple[int, ...]:
         return self.coords
 
