@@ -1,6 +1,7 @@
 
 from game.character.characteristics import Legs, Wings, Claws, Teeth
 
+
 class BaseCharacter:
     DEFAULT_BASE_ATTACK_POWER: int = 10
     DEFAULT_BASE_HEALTH: int = 100

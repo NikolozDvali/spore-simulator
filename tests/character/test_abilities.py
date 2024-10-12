@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 
-from game.character.abilities import can_crawl, can_hop, can_run, can_walk, can_fly, check_ability
+from game.character.abilities import can_crawl, can_hop, can_run, can_walk, can_fly, check_ability, \
+    get_possible_move_methods, MoveMethod
 from game.character.character import Character
 from game.character.characteristics import Wings, Legs
 
@@ -67,3 +68,20 @@ def test_can_fly():
 
     character.stamina = 81
     assert check_ability(can_fly, character) is True
+
+def test_move_abilities():
+    assert get_possible_move_methods(Character(base_stamina=0)) == []
+
+    character = Character(base_stamina=Character.DEFAULT_BASE_STAMINA)
+    mocked_legs: Legs = MagicMock(spec=Legs)
+    character.legs = mocked_legs
+    mocked_wings: Wings = MagicMock(spec=Wings)
+    character.wings = mocked_wings
+
+    character.legs.can_hop.return_value = True
+    character.legs.can_walk.return_value = True
+    character.legs.can_run.return_value = True
+    character.wings.can_fly.return_value = True
+
+    assert get_possible_move_methods(character) == [MoveMethod.CRAWL, MoveMethod.HOP, MoveMethod.WALK, MoveMethod.RUN, MoveMethod.FLY]
+
