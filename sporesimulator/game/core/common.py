@@ -5,7 +5,6 @@ class Coordinate:
     def __init__(self, *coords: int) -> None:
         self.coords: tuple[int, ...] = coords if coords else (0,)
 
-
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Coordinate):
             return self.coords == other.coords
