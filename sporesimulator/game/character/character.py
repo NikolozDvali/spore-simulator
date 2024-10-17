@@ -151,6 +151,10 @@ class Character:
         self.appendage_manager = appendage_manager
 
     @property
+    def stamina(self):
+        return self.stats_manager.stamina
+
+    @property
     def position(self) -> int:
         return self.position_manager.position
 
@@ -166,10 +170,16 @@ class Character:
         return [move for move in [Crawl(), Hop(), Walk(), Run(), Fly()] if move.can_do(self)]
 
     def move(self, move: Move, direction: Direction):
-        if not move.can_do(self):
-            raise ValueError(f'Move {move} cannot do that movement')
-        self.position_manager.move(move, direction)
-        self.stats_manager.decrease_stamina_by(move.speed())
+        initial_position = self.position_manager.position
+        initial_stamina = self.stats_manager.stamina
+
+        try:
+            self.position_manager.move(move, direction)
+            self.stats_manager.decrease_stamina_by(move.uses_stamina())
+        except Exception as e:
+            self.position_manager.position = initial_position
+            self.stats_manager.stamina = initial_stamina
+            raise ValueError("Cannot make that move: {}".format(e))
 
 class CharacterBuilder:
     def __init__(self):
