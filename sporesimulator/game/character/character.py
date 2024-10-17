@@ -13,25 +13,40 @@ class Crawl(Move):
     def requires_stamina(self):
         return 1
 
+    def can_do(self, character: 'Character'):
+        return character.stats_manager.stamina > self.requires_stamina()
+
 class Hop(Move):
     # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 21
+
+    def can_do(self, character: 'Character'):
+        return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.legs.can_hop()
 
 class Walk(Move):
     # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 41
 
+    def can_do(self, character: 'Character'):
+        return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.legs.can_walk()
+
 class Run(Move):
     # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 61
 
+    def can_do(self, character: 'Character'):
+        return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.legs.can_run()
+
 class Fly(Move):
     # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 81
+
+    def can_do(self, character: 'Character'):
+        return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.wings.can_fly()
 
 class CharacterStatsManager:
     def __init__(self,
@@ -79,18 +94,7 @@ class Character:
         return self.stats_manager.health
 
     def get_possible_moves(self) -> List[Move]:
-        possible_moves: List[Move] = []
-        if self.stats_manager.stamina > Crawl().requires_stamina():
-            possible_moves.append(Crawl())
-        if self.stats_manager.stamina > Hop().requires_stamina() and self.appendage_manager.legs.can_hop():
-            possible_moves.append(Hop())
-        if self.stats_manager.stamina > Walk().requires_stamina() and self.appendage_manager.legs.can_walk():
-            possible_moves.append(Walk())
-        if self.stats_manager.stamina > Run().requires_stamina() and self.appendage_manager.legs.can_run():
-            possible_moves.append(Run())
-        if self.stats_manager.stamina > Fly().requires_stamina() and self.appendage_manager.wings.can_fly():
-            possible_moves.append(Fly())
-        return possible_moves
+        return [move for move in [Crawl(), Hop(), Walk(), Run(), Fly()] if move.can_do(self)]
 
     def move(self, move: Move):
         pass
