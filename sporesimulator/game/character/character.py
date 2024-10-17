@@ -32,7 +32,7 @@ class CharacterBuilder:
     def __init__(self):
         self.base_health = DEFAULT_HEALTH
         self.base_attack_power = DEFAULT_ATTACK_POWER
-        self.base_stamina = DEFAULT_BASE_STAMINA
+        self.base_stamina = DEFAULT_STAMINA
         self.legs = Legs()
         self.wings = Wings()
         self.claws = Claws()
