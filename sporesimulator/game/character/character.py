@@ -1,7 +1,7 @@
 from typing import Self
 
-from game.character.appendages import Legs, Wings, Claws, Teeth, AppendageManager
-from game.core.constants import DEFAULT_BASE_HEALTH, DEFAULT_BASE_ATTACK_POWER, DEFAULT_BASE_STAMINA
+from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth, AppendageManager
+from sporesimulator.game.core.constants import DEFAULT_BASE_HEALTH, DEFAULT_BASE_ATTACK_POWER, DEFAULT_BASE_STAMINA
 
 class Character:
     def __init__(self, base_health: int = DEFAULT_BASE_HEALTH,
