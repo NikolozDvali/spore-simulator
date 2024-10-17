@@ -1,52 +1,88 @@
+from enum import Enum
 from typing import Self, List
 
 from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth
 from sporesimulator.game.core.constants import DEFAULT_HEALTH, DEFAULT_ATTACK_POWER, DEFAULT_STAMINA, DEFAULT_POSITION
 
 
+class Direction(Enum):
+    RIGHT = 1
+    LEFT = -1
+
 class Move:
     def __eq__(self, other):
         return isinstance(other, Move)
 
+    def speed(self):
+        pass
+
+    def can_do(self, character: 'Character'):
+        pass
+
+# noinspection PyMethodMayBeStatic
 class Crawl(Move):
-    # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 1
 
     def can_do(self, character: 'Character'):
         return character.stats_manager.stamina > self.requires_stamina()
 
+    def speed(self):
+        return 1
+
+# noinspection PyMethodMayBeStatic
 class Hop(Move):
-    # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 21
 
     def can_do(self, character: 'Character'):
         return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.legs.can_hop()
 
+    def speed(self):
+        return 3
+
+# noinspection PyMethodMayBeStatic
 class Walk(Move):
-    # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 41
 
     def can_do(self, character: 'Character'):
         return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.legs.can_walk()
 
+    def speed(self):
+        return 4
+
+# noinspection PyMethodMayBeStatic
 class Run(Move):
-    # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 61
 
     def can_do(self, character: 'Character'):
         return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.legs.can_run()
 
+    def speed(self):
+        return 6
+
+# noinspection PyMethodMayBeStatic
 class Fly(Move):
-    # noinspection PyMethodMayBeStatic
     def requires_stamina(self):
         return 81
 
     def can_do(self, character: 'Character'):
         return character.stats_manager.stamina > self.requires_stamina() and character.appendage_manager.wings.can_fly()
+
+    def speed(self):
+        return 8
+
+class PositionManager:
+    def __init__(self, position: int = 0):
+        self.position = position
+
+    def move(self, move: Move, direction: Direction):
+        if direction == Direction.RIGHT:
+            self.position += move.speed()
+        elif direction == Direction.LEFT:
+            self.position -= move.speed()
 
 class CharacterStatsManager:
     def __init__(self,
@@ -78,12 +114,16 @@ class AppendageManager:
 
 class Character:
     def __init__(self,
-                 position: int = 0,
+                 position_manager: PositionManager = PositionManager(),
                  stats_manager: CharacterStatsManager = CharacterStatsManager(),
                  appendage_manager: AppendageManager = AppendageManager()) -> None:
-        self.position = position
+        self.position_manager = position_manager
         self.stats_manager = stats_manager
         self.appendage_manager = appendage_manager
+
+    @property
+    def position(self) -> int:
+        return self.position_manager.position
 
     @property
     def attack_power(self) -> int:
@@ -96,8 +136,8 @@ class Character:
     def get_possible_moves(self) -> List[Move]:
         return [move for move in [Crawl(), Hop(), Walk(), Run(), Fly()] if move.can_do(self)]
 
-    def move(self, move: Move):
-        pass
+    def move(self, move: Move, direction: Direction):
+        self.position_manager.move(move, direction)
 
 class CharacterBuilder:
     def __init__(self):
@@ -109,6 +149,10 @@ class CharacterBuilder:
         self.wings = Wings()
         self.claws = Claws()
         self.teeth = Teeth()
+
+    def with_position(self, position: int) -> Self:
+        self.position = position
+        return self
 
     def with_health(self, base_health: int) -> Self:
         self.base_health = base_health
@@ -151,7 +195,7 @@ class CharacterBuilder:
             self.base_attack_power
         )
         return Character(
-            position=self.position,
+            position_manager=PositionManager(self.position),
             stats_manager=stats_manager,
             appendage_manager=appendage_manager
         )
