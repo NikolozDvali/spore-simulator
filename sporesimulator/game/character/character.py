@@ -97,10 +97,16 @@ class PositionManager:
         self.position = position
 
     def move(self, move: Move, direction: Direction):
+        new_position = self.position
         if direction == Direction.RIGHT:
-            self.position += move.speed()
+            new_position += move.speed()
         elif direction == Direction.LEFT:
-            self.position -= move.speed()
+            new_position -= move.speed()
+
+        if new_position < 0:
+            raise ValueError("Position cannot be negative")
+
+        self.position = new_position
 
 class CharacterStatsManager:
     def __init__(self,

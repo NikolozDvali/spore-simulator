@@ -1,3 +1,5 @@
+import pytest
+
 from sporesimulator.game.character.character import CharacterBuilder, Crawl, Fly, Run, Walk, Hop, Direction
 
 
@@ -13,6 +15,8 @@ def test_all_mighty_character_possible_moves():
                  .with_stamina(100)
                  .build())
     assert character.get_possible_moves() == [Crawl(), Hop(), Walk(), Run(), Fly()]
+
+    """POSITION CHANGE DURING MOVE"""
 
 def test_character_crawl_right_position_change():
     character = CharacterBuilder().with_position(100).build()
@@ -43,3 +47,10 @@ def test_character_fly_right_position_change():
     character = CharacterBuilder().with_wings(2).with_position(100).build()
     character.move(Fly(), Direction.RIGHT)
     assert character.position == 108
+
+def test_character_invalid_move():
+    character = CharacterBuilder().with_legs(1).with_position(5).build()
+    with pytest.raises(ValueError):
+        character.move(Fly(), Direction.LEFT)
+
+    # """STAMINA CHANGE DURING MOVE"""
