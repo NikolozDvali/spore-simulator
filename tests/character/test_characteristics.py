@@ -1,6 +1,6 @@
 import pytest
 
-from game.character.characteristics import Legs, Wings, Claws, Teeth
+from game.character.appendages import Legs, Wings, Claws, Teeth
 
 """=========================LEGS============================="""
 
@@ -71,12 +71,11 @@ def test_evolve_claws():
     assert claws.level == 1
 
 def test_attacking_power_multiplier():
-    assert Claws().attacking_power_multiplier() == 1
-    assert Claws(1).attacking_power_multiplier() == 2
-    assert Claws(2).attacking_power_multiplier() == 3
-    assert Claws(3).attacking_power_multiplier() == 4
-    assert Claws(4).attacking_power_multiplier() == 4
-
+    assert Claws().modify_attacking_power(100) == 100
+    assert Claws(1).modify_attacking_power(100) == 200
+    assert Claws(2).modify_attacking_power(100) == 300
+    assert Claws(3).modify_attacking_power(100) == 400
+    assert Claws(4).modify_attacking_power(100) == 400
 
 """=========================TEETH============================="""
 
@@ -97,8 +96,8 @@ def test_evolve_teeth():
     assert teeth.level == 1
 
 def test_attacking_power_additional():
-    assert Teeth(0).attacking_power_additional() == 0
-    assert Teeth(1).attacking_power_additional() == 3
-    assert Teeth(2).attacking_power_additional() == 6
-    assert Teeth(3).attacking_power_additional() == 9
-    assert Teeth(4).attacking_power_additional() == 9
+    assert Teeth().modify_attacking_power(100) == 100
+    assert Teeth(1).modify_attacking_power(100) == 103
+    assert Teeth(2).modify_attacking_power(100) == 106
+    assert Teeth(3).modify_attacking_power(100) == 109
+    assert Teeth(4).modify_attacking_power(100) == 109

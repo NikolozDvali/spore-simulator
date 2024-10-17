@@ -1,5 +1,4 @@
-from abc import ABC
-from typing import Protocol, Tuple
+from typing import Tuple
 
 
 class Coordinate:
@@ -17,17 +16,8 @@ class Coordinate:
     def __str__(self) -> str:
         return str(self.coords)
 
-    def to_tuple(self) -> Tuple[int, ...]:
-        return self.coords
-
     def __getitem__(self, index: int) -> int:
         return self.coords[index]
 
-class Entity(ABC):
-    def __init__(self, coordinate: Coordinate = Coordinate()) -> None:
-        self.coordinate = coordinate
-
-    def update_position(self, new_position: Coordinate) -> None:
-        self.coordinate = new_position
-
-
+    def to_tuple(self) -> Tuple[int, ...]:
+        return self.coords
