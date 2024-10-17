@@ -27,7 +27,7 @@ class Crawl(Move):
         return 1
 
     def can_do(self, character: Character) -> bool:
-        return character.stamina >= self.required_stamina()
+        return character.stats_manager.stamina >= self.required_stamina()
 
 class Hop(Move):
     def required_stamina(self) -> int:
@@ -40,7 +40,7 @@ class Hop(Move):
         return 3
 
     def can_do(self, character: Character) -> bool:
-        return character.appendage_manager.legs.count > 1 and character.stamina >= self.required_stamina()
+        return character.appendage_manager.legs.count > 1 and character.stats_manager.stamina >= self.required_stamina()
 
 class Walk(Move):
     def required_stamina(self) -> int:
@@ -53,7 +53,7 @@ class Walk(Move):
         return 4
 
     def can_do(self, character: Character) -> bool:
-        return character.appendage_manager.legs.count > 2 and character.stamina >= self.required_stamina()
+        return character.appendage_manager.legs.count > 2 and character.stats_manager.stamina >= self.required_stamina()
 
 class Run(Move):
     def required_stamina(self) -> int:
@@ -66,7 +66,7 @@ class Run(Move):
         return 6
 
     def can_do(self, character: Character) -> bool:
-        return character.appendage_manager.legs.count > 2 and character.stamina >= self.required_stamina()
+        return character.appendage_manager.legs.count > 2 and character.stats_manager.stamina >= self.required_stamina()
 
 
 class Fly(Move):
@@ -80,4 +80,4 @@ class Fly(Move):
         return 8
 
     def can_do(self, character: Character) -> bool:
-        return character.appendage_manager.wings.count > 2 and character.stamina >= self.required_stamina()
+        return character.appendage_manager.wings.count > 2 and character.stats_manager.stamina >= self.required_stamina()
