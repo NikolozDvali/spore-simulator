@@ -1,13 +1,11 @@
 from typing import Dict
 
 from sporesimulator.game.character.character import Character
-from sporesimulator.game.core.common import Coordinate
 
 
 class World:
     def __init__(self):
-        self.characters: Dict[Character, Coordinate] = {}
+        self.characters: Dict[Character, int] = {}
 
-    def add_character(self, character: Character, coordinate: Coordinate):
+    def add_character(self, character: Character, coordinate: int):
         self.characters[character] = coordinate
-        
