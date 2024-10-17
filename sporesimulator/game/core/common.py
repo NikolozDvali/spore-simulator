@@ -3,10 +3,8 @@ from typing import Tuple
 
 class Coordinate:
     def __init__(self, *coords: int) -> None:
-        if not coords:
-            self.coords = (0,)
-        else:
-            self.coords = coords
+        self.coords: tuple[int, ...] = coords if coords else (0,)
+
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Coordinate):

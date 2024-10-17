@@ -3,11 +3,12 @@ from typing import Self
 from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth, AppendageManager
 from sporesimulator.game.core.constants import DEFAULT_BASE_HEALTH, DEFAULT_BASE_ATTACK_POWER, DEFAULT_BASE_STAMINA
 
+
 class Character:
     def __init__(self, base_health: int = DEFAULT_BASE_HEALTH,
                  base_attack_power: int = DEFAULT_BASE_ATTACK_POWER,
                  base_stamina: int = DEFAULT_BASE_STAMINA,
-                 appendage_manager: AppendageManager = None) -> None:
+                 appendage_manager: AppendageManager | None = None) -> None:
         self.health = base_health
         self.stamina = base_stamina
         self.__base_attack_power = base_attack_power

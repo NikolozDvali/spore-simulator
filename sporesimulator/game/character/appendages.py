@@ -53,7 +53,11 @@ class Teeth(LevelBasedAppendage):
         return attacking_power + (min(self.level * 3, 9))
 
 class AppendageManager:
-    def __init__(self, legs: Legs = None, wings: Wings = None, claws: Claws = None, teeth: Teeth = None):
+    def __init__(self,
+                 legs: Legs | None = None,
+                 wings: Wings | None = None,
+                 claws: Claws | None = None,
+                 teeth: Teeth | None = None):
         self.legs = legs if legs is not None else Legs()
         self.wings = wings if wings is not None else Wings()
         self.claws = claws if claws is not None else Claws()
