@@ -1,6 +1,6 @@
 import pytest
 
-from game.character.appendages import Legs, Wings, Claws, Teeth
+from game.character.appendages import Legs, Wings, Claws, Teeth, Appendage, AppendageManager
 
 """=========================LEGS============================="""
 
@@ -101,3 +101,11 @@ def test_attacking_power_additional():
     assert Teeth(2).modify_attacking_power(100) == 106
     assert Teeth(3).modify_attacking_power(100) == 109
     assert Teeth(4).modify_attacking_power(100) == 109
+
+"""================APPENDAGE MANAGER======================"""
+
+def test_appendage_manager_calculate_attack_power_on_default_appendages():
+    assert AppendageManager().calculate_attack_power(100) == 100
+
+def test_appendage_manager_calculate_attack_power_on_manual_appendages():
+    assert AppendageManager(claws=Claws(2), teeth=Teeth(3)).calculate_attack_power(100) == 309

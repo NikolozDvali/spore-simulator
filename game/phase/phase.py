@@ -1,6 +1,7 @@
-from typing import Optional, Protocol
+from abc import ABC
+from typing import Optional
 
-class Phase(Protocol):
+class Phase(ABC):
     def __init__(self, next_phase: Optional['Phase'] = None) -> None:
         self.next_phase = next_phase or NullPhase()
 

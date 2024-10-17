@@ -61,10 +61,10 @@ class AppendageManager:
 
     def calculate_attack_power(self, base_attack_power: int) -> int:
         attack_power = base_attack_power
-        if self.teeth:
-            attack_power = self.teeth.modify_attacking_power(attack_power)
         if self.claws:
             attack_power = self.claws.modify_attacking_power(attack_power)
+        if self.teeth:
+            attack_power = self.teeth.modify_attacking_power(attack_power)
         return attack_power
 
 
