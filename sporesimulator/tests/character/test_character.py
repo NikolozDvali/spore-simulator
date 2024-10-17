@@ -23,3 +23,23 @@ def test_character_crawl_left_position_change():
     character = CharacterBuilder().with_position(100).build()
     character.move(Crawl(), Direction.LEFT)
     assert character.position == 99
+
+def test_character_hop_right_position_change():
+    character = CharacterBuilder().with_legs(1).with_position(100).build()
+    character.move(Hop(), Direction.RIGHT)
+    assert character.position == 103
+
+def test_character_walk_right_position_change():
+    character = CharacterBuilder().with_legs(2).with_position(100).build()
+    character.move(Walk(), Direction.RIGHT)
+    assert character.position == 104
+
+def test_character_run_right_position_change():
+    character = CharacterBuilder().with_legs(2).with_position(100).build()
+    character.move(Run(), Direction.RIGHT)
+    assert character.position == 106
+
+def test_character_fly_right_position_change():
+    character = CharacterBuilder().with_wings(2).with_position(100).build()
+    character.move(Fly(), Direction.RIGHT)
+    assert character.position == 108

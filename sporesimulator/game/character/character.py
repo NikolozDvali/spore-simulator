@@ -13,11 +13,14 @@ class Move:
     def __eq__(self, other):
         return isinstance(other, Move)
 
-    def speed(self):
-        pass
+    def speed(self) -> int:
+        return 0
 
-    def can_do(self, character: 'Character'):
-        pass
+    def can_do(self, character: 'Character') -> bool:
+        return False
+
+    def uses_stamina(self) -> int:
+        return 0
 
 # noinspection PyMethodMayBeStatic
 class Crawl(Move):
@@ -28,6 +31,9 @@ class Crawl(Move):
         return character.stats_manager.stamina > self.requires_stamina()
 
     def speed(self):
+        return 1
+
+    def uses_stamina(self):
         return 1
 
 # noinspection PyMethodMayBeStatic
@@ -41,6 +47,9 @@ class Hop(Move):
     def speed(self):
         return 3
 
+    def uses_stamina(self):
+        return 2
+
 # noinspection PyMethodMayBeStatic
 class Walk(Move):
     def requires_stamina(self):
@@ -51,6 +60,9 @@ class Walk(Move):
 
     def speed(self):
         return 4
+
+    def uses_stamina(self):
+        return 2
 
 # noinspection PyMethodMayBeStatic
 class Run(Move):
@@ -63,6 +75,9 @@ class Run(Move):
     def speed(self):
         return 6
 
+    def uses_stamina(self):
+        return 4
+
 # noinspection PyMethodMayBeStatic
 class Fly(Move):
     def requires_stamina(self):
@@ -73,6 +88,9 @@ class Fly(Move):
 
     def speed(self):
         return 8
+
+    def uses_stamina(self):
+        return 4
 
 class PositionManager:
     def __init__(self, position: int = 0):
@@ -92,6 +110,11 @@ class CharacterStatsManager:
         self.health = health
         self.stamina = stamina
         self.attacking_power = attacking_power
+
+    def decrease_stamina_by(self, decrease_amount: int):
+        if decrease_amount > self.stamina:
+            raise ValueError('decrease_amount must be less than stamina')
+        self.stamina -= decrease_amount
 
 class AppendageManager:
     def __init__(self,
@@ -137,7 +160,10 @@ class Character:
         return [move for move in [Crawl(), Hop(), Walk(), Run(), Fly()] if move.can_do(self)]
 
     def move(self, move: Move, direction: Direction):
+        if not move.can_do(self):
+            raise ValueError(f'Move {move} cannot do that movement')
         self.position_manager.move(move, direction)
+        self.stats_manager.decrease_stamina_by(move.speed())
 
 class CharacterBuilder:
     def __init__(self):
