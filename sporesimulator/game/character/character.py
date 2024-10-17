@@ -1,28 +1,37 @@
 from typing import Self
 
 from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth, AppendageManager
-from sporesimulator.game.core.constants import DEFAULT_BASE_HEALTH, DEFAULT_BASE_ATTACK_POWER, DEFAULT_BASE_STAMINA
+from sporesimulator.game.core.constants import DEFAULT_HEALTH, DEFAULT_ATTACK_POWER, DEFAULT_BASE_STAMINA
 
+
+class CharacterStatsManager:
+    def __init__(self,
+                 health: int = DEFAULT_HEALTH,
+                 stamina: int = DEFAULT_BASE_STAMINA,
+                 attacking_power: int = DEFAULT_ATTACK_POWER) -> None:
+        self.base_health = health
+        self.base_stamina = stamina
+        self.base_attacking_power = attacking_power
 
 class Character:
-    def __init__(self, base_health: int = DEFAULT_BASE_HEALTH,
-                 base_attack_power: int = DEFAULT_BASE_ATTACK_POWER,
-                 base_stamina: int = DEFAULT_BASE_STAMINA,
+    def __init__(self,
+                 stats_manager: CharacterStatsManager | None = None,
                  appendage_manager: AppendageManager | None = None) -> None:
-        self.health = base_health
-        self.stamina = base_stamina
-        self.__base_attack_power = base_attack_power
+        self.stats_manager = stats_manager
         self.appendage_manager = appendage_manager if appendage_manager else AppendageManager()
 
     @property
     def attack_power(self) -> int:
-        return self.appendage_manager.calculate_attack_power(self.__base_attack_power)
+        return self.appendage_manager.calculate_attack_power(self.stats_manager.base_attacking_power)
 
+    @property
+    def health(self) -> int:
+        return self.stats_manager.base_health
 
 class CharacterBuilder:
     def __init__(self):
-        self.base_health = DEFAULT_BASE_HEALTH
-        self.base_attack_power = DEFAULT_BASE_ATTACK_POWER
+        self.base_health = DEFAULT_HEALTH
+        self.base_attack_power = DEFAULT_ATTACK_POWER
         self.base_stamina = DEFAULT_BASE_STAMINA
         self.legs = Legs()
         self.wings = Wings()
@@ -64,10 +73,13 @@ class CharacterBuilder:
             claws=self.claws,
             teeth=self.teeth
         )
+        stats_manager = CharacterStatsManager(
+            self.base_health,
+            self.base_stamina,
+            self.base_attack_power
+        )
         return Character(
-            base_health=self.base_health,
-            base_attack_power=self.base_attack_power,
-            base_stamina=self.base_stamina,
+            stats_manager=stats_manager,
             appendage_manager=appendage_manager
         )
 
