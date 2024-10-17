@@ -18,3 +18,8 @@ class Coordinate:
 
     def to_tuple(self) -> Tuple[int, ...]:
         return self.coords
+
+class PositionManager:
+    def __init__(self, coordinate: Coordinate | None = None):
+        self.coordinate = coordinate or Coordinate(0, 0)
+

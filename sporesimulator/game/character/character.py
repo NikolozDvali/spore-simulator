@@ -1,6 +1,7 @@
 from typing import Self
 
 from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth, AppendageManager
+from sporesimulator.game.core.common import PositionManager
 from sporesimulator.game.core.constants import DEFAULT_HEALTH, DEFAULT_ATTACK_POWER, DEFAULT_STAMINA
 
 
@@ -15,8 +16,10 @@ class CharacterStatsManager:
 
 class Character:
     def __init__(self,
+                 positionManager: PositionManager | None = None,
                  stats_manager: CharacterStatsManager | None = None,
                  appendage_manager: AppendageManager | None = None) -> None:
+        self.positionManager = positionManager or PositionManager()
         self.stats_manager = stats_manager
         self.appendage_manager = appendage_manager if appendage_manager else AppendageManager()
 
