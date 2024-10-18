@@ -14,36 +14,6 @@ class Character:
         self.stats_manager = stats_manager
         self.appendage_manager = appendage_manager
 
-    @property
-    def stamina(self):
-        return self.stats_manager.stamina
-
-    @stamina.setter
-    def stamina(self, stamina: int) -> None:
-        self.stats_manager.stamina = stamina
-
-    @property
-    def position(self) -> int:
-        return self.position_manager.position
-
-    @position.setter
-    def position(self, new_position: int) -> None:
-        self.position_manager.position = new_position
-
-    @property
-    def attack_power(self) -> int:
-        return self.stats_manager.calculate_attack_power(self.appendage_manager)
-
-    @property
-    def health(self) -> int:
-        return self.stats_manager.health
-
-    @health.setter
-    def health(self, health: int) -> None:
-        self.stats_manager.health = health
-        if self.stats_manager.health <= 0:
-            self.stats_manager.health = 0
-
     """Common methods"""
 
     def attack(self, victim: 'Character'):
@@ -68,6 +38,26 @@ class Character:
         return [move_protocol for move_protocol in MOVE_PROTOCOLS if self.can_move(move_protocol, Direction.NOWHERE)]
 
     """Helper methods"""
+
+    def __getattr__(self, attr_name: str):
+        stats_attributes = {
+            'stamina': self.stats_manager.stamina,
+            'health': self.stats_manager.health,
+            'attack_power': self.stats_manager.calculate_attack_power(self.appendage_manager),
+            'position': self.position_manager.position,
+        }
+        if attr_name in stats_attributes:
+            return stats_attributes[attr_name]
+        else:
+            raise AttributeError(f"{attr_name} is not a valid attribute")
+
+    def __setattr__(self, attr_name: str, value):
+        if attr_name in ['stamina', 'health']:
+            self.stats_manager.__setattr__(attr_name, value)
+        elif attr_name == 'position':
+            self.position_manager.position = value
+        else:
+            object.__setattr__(self, attr_name, value)
 
     def __str__(self):
         return (
