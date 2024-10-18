@@ -95,9 +95,17 @@ class CharacterStatsManager:
                  health: int = DEFAULT_HEALTH,
                  stamina: int = DEFAULT_STAMINA,
                  base_attack_power: int = DEFAULT_ATTACK_POWER) -> None:
-        self.health = health
+        self._health = health
         self.stamina = stamina
         self.base_attack_power = base_attack_power
+
+    @property
+    def health(self):
+        return self._health
+
+    @health.setter
+    def health(self, new_health: int):
+        self._health = max(0, new_health)
 
     def can_use_stamina(self, required_stamina: int) -> bool:
         return self.stamina >= required_stamina

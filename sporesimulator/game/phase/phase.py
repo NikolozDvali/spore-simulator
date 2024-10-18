@@ -69,8 +69,14 @@ class EvolutionPhase(Phase):
 class ChasePhase(Phase):
     def start(self) -> None:
         ConsoleFormatter.print_section_header("Starting Chase Phase.")
-
-        pass
+        #
+        # predator = self.world.predator
+        # prey = self.world.prey
+        #
+        # while True:
+        #     if predator.stamina == 0:
+        #         print("Prey ran into infinity")
+        #         return
 
         self.next_phase.start()
 
