@@ -31,7 +31,7 @@ class AppendageManager:
 
     @property
     def wing_count(self):
-        return self.wings.count()
+        return self.wings.count
 
     @wing_count.setter
     def wing_count(self, count: int):
@@ -39,7 +39,7 @@ class AppendageManager:
 
     @property
     def leg_count(self):
-        return self.legs.count()
+        return self.legs.count
 
     @leg_count.setter
     def leg_count(self, count: int):
@@ -82,10 +82,11 @@ class AppendageManager:
             appendages_info.append(f"{self.leg_count} legs")
         if self.wing_count > 0:
             appendages_info.append(f"{self.wing_count} wings")
-        if self.claw_level > 0:
-            appendages_info.append(f"Claw level: {self.claw_level}")
         if self.teeth_level > 0:
             appendages_info.append(f"Teeth level: {self.teeth_level}")
+        if self.claw_level > 0:
+            appendages_info.append(f"Claw level: {self.claw_level}")
+
 
         return ", ".join(appendages_info) if appendages_info else "No appendages"
 
@@ -108,19 +109,19 @@ class CharacterStatsManager:
 
     def calculate_attack_power(self, appendage_manager: AppendageManager) -> int:
         attack_power = self.base_attack_power
-        if appendage_manager.claws:
-            attack_power = appendage_manager.claws.modify_attacking_power(attack_power)
         if appendage_manager.teeth:
             attack_power = appendage_manager.teeth.modify_attacking_power(attack_power)
+        if appendage_manager.claws:
+            attack_power = appendage_manager.claws.modify_attacking_power(attack_power)
         return attack_power
 
-    def __str__(self, appendage_manager: AppendageManager | None = None) -> str:
+
+    def __str__(self) -> str:
         base_info = (f"Health: {self.health}, "
                      f"Stamina: {self.stamina}, "
                      f"Base Attack Power: {self.base_attack_power}")
+        return base_info
 
-        if appendage_manager:
-            final_attack_power = self.calculate_attack_power(appendage_manager)
-            return f"{base_info}, Final Attack Power: {final_attack_power}"
-        else:
-            return base_info
+    def str_with_appendages(self, appendage_manager: AppendageManager) -> str:
+        final_attack_power = self.calculate_attack_power(appendage_manager)
+        return f"{self}, Final Attack Power: {final_attack_power}"

@@ -72,6 +72,6 @@ class Character:
     def __str__(self):
         return f"Creature name: {self.name}\n\
                 Position: {str(self.position_manager)}\n\
-                Stats: {str(self.stats_manager)}\n\
+                Stats: {self.stats_manager.str_with_appendages(self.appendage_manager)}\n\
                 Appendages: {str(self.appendage_manager)}"
 

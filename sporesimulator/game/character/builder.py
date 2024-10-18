@@ -9,6 +9,11 @@ class CharacterBuilder:
         self.position_manager = PositionManager()
         self.stats_manager = CharacterStatsManager()
         self.appendage_manager = AppendageManager()
+        self.name = None
+
+    def with_name(self, name: str) -> Self:
+        self.name = name
+        return self
 
     def with_position(self, position: int) -> Self:
         self.position_manager.position = position
@@ -35,11 +40,11 @@ class CharacterBuilder:
         return self
 
     def with_claws(self, level: int) -> Self:
-        self.appendage_manager.claw_level(level)
+        self.appendage_manager.claw_level = level
         return self
 
     def with_teeth(self, level: int) -> Self:
-        self.appendage_manager.teeth_level(level)
+        self.appendage_manager.teeth_level = level
         return self
 
     def build(self) -> Character:
