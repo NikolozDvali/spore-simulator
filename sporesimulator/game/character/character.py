@@ -94,6 +94,7 @@ class Fly(Move):
 
 class PositionManager:
     def __init__(self, position: int = 0):
+        # TODO: check position >= 0
         self.position = position
 
     def move(self, move: Move, direction: Direction):
@@ -166,6 +167,10 @@ class Character:
     def health(self) -> int:
         return self.stats_manager.health
 
+    @health.setter
+    def health(self, value):
+        self.stats_manager.health = value
+
     def get_possible_moves(self) -> List[Move]:
         return [move for move in [Crawl(), Hop(), Walk(), Run(), Fly()] if move.can_do(self)]
 
@@ -180,6 +185,11 @@ class Character:
             self.position_manager.position = initial_position
             self.stats_manager.stamina = initial_stamina
             raise ValueError("Cannot make that move: {}".format(e))
+
+    def attack(self, victim: 'Character') -> None:
+        if victim.position != self.position:
+            raise ValueError("Cant attack on the distance")
+        victim.health -= self.attack_power
 
 class CharacterBuilder:
     def __init__(self):
