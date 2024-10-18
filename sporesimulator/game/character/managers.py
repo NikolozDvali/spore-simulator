@@ -15,6 +15,9 @@ class PositionManager:
             raise ValueError("Can't move to negative position!")
         self.position = new_position
 
+    def __str__(self) -> str:
+        return str(self.position)
+
 class AppendageManager:
     def __init__(self,
                  legs: Legs | None = None,
@@ -72,24 +75,28 @@ class AppendageManager:
 
         return move_methods.get(move_type, lambda: False)()
 
-    """Common methods"""
 
-    def calculate_attack_power(self, base_attack_power: int) -> int:
-        attack_power = base_attack_power
-        if self.claws:
-            attack_power = self.claws.modify_attacking_power(attack_power)
-        if self.teeth:
-            attack_power = self.teeth.modify_attacking_power(attack_power)
-        return attack_power
+    def __str__(self) -> str:
+        appendages_info = []
+        if self.leg_count > 0:
+            appendages_info.append(f"{self.leg_count} legs")
+        if self.wing_count > 0:
+            appendages_info.append(f"{self.wing_count} wings")
+        if self.claw_level > 0:
+            appendages_info.append(f"Claw level: {self.claw_level}")
+        if self.teeth_level > 0:
+            appendages_info.append(f"Teeth level: {self.teeth_level}")
+
+        return ", ".join(appendages_info) if appendages_info else "No appendages"
 
 class CharacterStatsManager:
     def __init__(self,
                  health: int = DEFAULT_HEALTH,
                  stamina: int = DEFAULT_STAMINA,
-                 attacking_power: int = DEFAULT_ATTACK_POWER) -> None:
+                 base_attack_power: int = DEFAULT_ATTACK_POWER) -> None:
         self.health = health
         self.stamina = stamina
-        self.attacking_power = attacking_power
+        self.base_attack_power = base_attack_power
 
     def can_use_stamina(self, required_stamina: int) -> bool:
         return self.stamina >= required_stamina
@@ -98,3 +105,22 @@ class CharacterStatsManager:
         if self.stamina < required_stamina:
             raise ValueError("Not enough stamina!")
         self.stamina -= stamina_cost
+
+    def calculate_attack_power(self, appendage_manager: AppendageManager) -> int:
+        attack_power = self.base_attack_power
+        if appendage_manager.claws:
+            attack_power = appendage_manager.claws.modify_attacking_power(attack_power)
+        if appendage_manager.teeth:
+            attack_power = appendage_manager.teeth.modify_attacking_power(attack_power)
+        return attack_power
+
+    def __str__(self, appendage_manager: AppendageManager | None = None) -> str:
+        base_info = (f"Health: {self.health}, "
+                     f"Stamina: {self.stamina}, "
+                     f"Base Attack Power: {self.base_attack_power}")
+
+        if appendage_manager:
+            final_attack_power = self.calculate_attack_power(appendage_manager)
+            return f"{base_info}, Final Attack Power: {final_attack_power}"
+        else:
+            return base_info

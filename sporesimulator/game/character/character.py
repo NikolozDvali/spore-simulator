@@ -5,9 +5,11 @@ from sporesimulator.game.move.move import Move, Direction
 
 class Character:
     def __init__(self,
+                 name: str = "Creature",
                  position_manager: PositionManager = PositionManager(),
                  stats_manager: CharacterStatsManager = CharacterStatsManager(),
                  appendage_manager: AppendageManager = AppendageManager()) -> None:
+        self.name = name
         self.position_manager = position_manager
         self.stats_manager = stats_manager
         self.appendage_manager = appendage_manager
@@ -30,7 +32,7 @@ class Character:
 
     @property
     def attack_power(self) -> int:
-        return self.appendage_manager.calculate_attack_power(self.stats_manager.attacking_power)
+        return self.stats_manager.calculate_attack_power(self.appendage_manager)
 
     @property
     def health(self) -> int:
@@ -64,4 +66,12 @@ class Character:
 
     def get_available_move_protocols(self) -> list[type[Move]]:
         return [move_protocol for move_protocol in MOVE_PROTOCOLS if self.can_move(move_protocol, Direction.NOWHERE)]
+
+    """Helper methods"""
+
+    def __str__(self):
+        return f"Creature name: {self.name}\n\
+                Position: {str(self.position_manager)}\n\
+                Stats: {str(self.stats_manager)}\n\
+                Appendages: {str(self.appendage_manager)}"
 
