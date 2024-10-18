@@ -1,8 +1,7 @@
 from sporesimulator.game.character.managers import PositionManager, AppendageManager, CharacterStatsManager
-from sporesimulator.game.core.common import Entity
 
 
-class Character(Entity):
+class Character:
     def __init__(self,
                  position_manager: PositionManager = PositionManager(),
                  stats_manager: CharacterStatsManager = CharacterStatsManager(),
@@ -34,6 +33,8 @@ class Character(Entity):
     @health.setter
     def health(self, health: int) -> None:
         self.stats_manager.health = health
+        if self.stats_manager.health <= 0:
+            self.stats_manager.health = 0
 
     """Common methods"""
 

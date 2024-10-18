@@ -1,4 +1,16 @@
-from ..core.common import Appendage
+from abc import ABC
+
+class Appendage(ABC):
+    def __init__(self, attribute: int = 0):
+        if attribute < 0:
+            raise ValueError("Attribute value cannot be negative")
+        self.attribute = attribute
+
+    def evolve(self, increment: int = 1):
+        self.attribute += increment
+
+    def modify_attacking_power(self, attacking_power: int):
+        pass
 
 class CountBasedAppendage(Appendage):
     @property
