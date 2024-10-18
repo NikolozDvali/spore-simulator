@@ -80,3 +80,15 @@ def test_character_can_fly():
     character.move(Fly, Direction.RIGHT)
     assert character.position == 10 + Fly.speed
     assert character.stamina == 81 - Fly.uses_stamina
+
+def test_character_possible_move_protocols_none():
+    character = CharacterBuilder().with_stamina(0).build()
+    assert character.get_available_move_protocols() == []
+
+def test_character_possible_move_protocols_some():
+    character = CharacterBuilder().with_stamina(50).with_legs(2).build()
+    assert character.get_available_move_protocols() == [Crawl, Hop, Walk]
+
+def test_character_possible_move_protocols_all_available():
+    character = CharacterBuilder().with_stamina(100).with_legs(2).with_wings(2).build()
+    assert character.get_available_move_protocols() == [Crawl, Hop, Walk, Run, Fly]

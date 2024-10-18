@@ -1,4 +1,5 @@
 from sporesimulator.game.character.managers import PositionManager, AppendageManager, CharacterStatsManager
+from sporesimulator.game.move import MOVE_PROTOCOLS
 from sporesimulator.game.move.move import Move, Direction
 
 
@@ -46,16 +47,21 @@ class Character:
     def attack(self, victim: 'Character'):
         victim.health -= self.attack_power
 
-    def move(self, movement_protocol: type[Move], direction: Direction):
-        new_position = self.position + movement_protocol.speed * direction.value
-
+    def can_move(self, movement_protocol: type[Move], direction: Direction):
         if not self.appendage_manager.supports_movement(movement_protocol):
-            raise ValueError("Character appendages don't support that movement")
+            return False
         if not self.stats_manager.can_use_stamina(movement_protocol.requires_stamina):
-            raise ValueError("Character doesn't have enough stamina")
-        if not self.position_manager.can_move_to(new_position):
-            raise ValueError("Character cant move there")
+            return False
+        if not self.position_manager.can_move_to(self.position + movement_protocol.speed * direction.value):
+            return False
+        return True
 
-        self.position_manager.move(new_position)
+    def move(self, movement_protocol: type[Move], direction: Direction):
+        if not self.can_move(movement_protocol, direction):
+            raise ValueError("Can not move the character")
+        self.position_manager.move(self.position + movement_protocol.speed * direction.value)
         self.stats_manager.use_stamina(movement_protocol.uses_stamina, movement_protocol.requires_stamina)
+
+    def get_available_move_protocols(self) -> list[type[Move]]:
+        return [move_protocol for move_protocol in MOVE_PROTOCOLS if self.can_move(move_protocol, Direction.NOWHERE)]
 
