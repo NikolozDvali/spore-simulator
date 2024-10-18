@@ -50,11 +50,16 @@ class Character:
     def attack(self, victim: 'Character'):
         victim.health -= self.attack_power
 
-    def move(self, movement_protocol: type[Move], direction: Direction):
-        if self.stamina < movement_protocol.requires_stamina:
-            raise ValueError("Not enough stamina!")
-        new_position = self.position + (movement_protocol.speed * direction.value)
-        if new_position < 0:
-            raise ValueError("Can't move to negative position!")
-        self.position = new_position
-        self.stamina -= movement_protocol.uses_stamina
+    def move(self, movement_protocol: type[Move], direction: Direction) -> object:
+        new_position = self.position + movement_protocol.speed * direction.value
+
+        if not self.appendage_manager.supports_movement(movement_protocol):
+            raise ValueError("Character appendages don't support that movement")
+        if not self.stats_manager.can_use_stamina(movement_protocol.requires_stamina):
+            raise ValueError("Character doesn't have enough stamina")
+        if not self.position_manager.can_move_to(new_position):
+            raise ValueError("Character cant move there")
+
+        self.position_manager.move(new_position)
+        self.stats_manager.use_stamina(movement_protocol.uses_stamina, movement_protocol.requires_stamina)
+

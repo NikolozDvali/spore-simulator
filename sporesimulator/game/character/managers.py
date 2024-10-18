@@ -1,10 +1,19 @@
 from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth
 from sporesimulator.game.core.constants import DEFAULT_HEALTH, DEFAULT_STAMINA, DEFAULT_ATTACK_POWER
+from sporesimulator.game.move.move import Move
 
 
 class PositionManager:
     def __init__(self, position: int = 0):
         self.position = position
+
+    def can_move_to(self, position: int) -> bool:
+        return position >= 0
+
+    def move(self, new_position: int) -> None:
+        if new_position < 0:
+            raise ValueError("Can't move to negative position!")
+        self.position = new_position
 
 class AppendageManager:
     def __init__(self,
@@ -53,6 +62,20 @@ class AppendageManager:
     def claw_level(self, level: int):
         self.claws.level = level
 
+    """Movement check"""
+
+    def supports_movement(self, move_protocol: type[Move]):
+        move_type = move_protocol.__name__.lower()
+        move_methods = {
+            'crawl': lambda: True,
+            'hop': self.legs.can_hop,
+            'walk': self.legs.can_walk,
+            'run': self.legs.can_run,
+            'fly': self.wings.can_fly,
+        }
+
+        return move_methods.get(move_type, lambda: False)()
+
     """Common methods"""
 
     def calculate_attack_power(self, base_attack_power: int) -> int:
@@ -71,3 +94,11 @@ class CharacterStatsManager:
         self.health = health
         self.stamina = stamina
         self.attacking_power = attacking_power
+
+    def can_use_stamina(self, required_stamina: int) -> bool:
+        return self.stamina >= required_stamina
+
+    def use_stamina(self, stamina_cost: int = 0, required_stamina: int = 0) -> None:
+        if self.stamina < required_stamina:
+            raise ValueError("Not enough stamina!")
+        self.stamina -= stamina_cost
