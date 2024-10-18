@@ -1,4 +1,5 @@
 from sporesimulator.game.character.managers import PositionManager, AppendageManager, CharacterStatsManager
+from sporesimulator.game.move.move import Move, Direction
 
 
 class Character:
@@ -30,13 +31,30 @@ class Character:
 
     """Common attribute setters"""
 
+    @position.setter
+    def position(self, new_position: int) -> None:
+        self.position_manager.position = new_position
+
     @health.setter
     def health(self, health: int) -> None:
         self.stats_manager.health = health
         if self.stats_manager.health <= 0:
             self.stats_manager.health = 0
 
+    @stamina.setter
+    def stamina(self, stamina: int) -> None:
+        self.stats_manager.stamina = stamina
+
     """Common methods"""
 
     def attack(self, victim: 'Character'):
         victim.health -= self.attack_power
+
+    def move(self, movement_protocol: type[Move], direction: Direction):
+        if self.stamina < movement_protocol.requires_stamina:
+            raise ValueError("Not enough stamina!")
+        new_position = self.position + (movement_protocol.speed * direction.value)
+        if new_position < 0:
+            raise ValueError("Can't move to negative position!")
+        self.position = new_position
+        self.stamina -= movement_protocol.uses_stamina
