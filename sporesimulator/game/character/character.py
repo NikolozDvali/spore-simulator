@@ -70,8 +70,9 @@ class Character:
     """Helper methods"""
 
     def __str__(self):
-        return f"Creature name: {self.name}\n\
-                Position: {str(self.position_manager)}\n\
-                Stats: {self.stats_manager.str_with_appendages(self.appendage_manager)}\n\
-                Appendages: {str(self.appendage_manager)}"
-
+        return (
+            f"Creature name: {self.name}\n"
+            f"Position: {str(self.position_manager)}\n"
+            f"Stats: {self.stats_manager.str_with_appendages(self.appendage_manager)}\n"
+            f"Appendages: {str(self.appendage_manager)}"
+        )

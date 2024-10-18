@@ -7,6 +7,7 @@ from sporesimulator.game.character.character import Character
 from sporesimulator.game.core.constants import MIN_STAMINA, MAX_STAMINA, MIN_HEALTH, MAX_HEALTH, MAX_POSITION, \
     MIN_ATTACK_POWER, MAX_ATTACK_POWER, MAX_LEG_COUNT, MIN_LEG_COUNT, MIN_WING_COUNT, MAX_WING_COUNT, \
     MIN_CLAW_LEVEL, MIN_TEETH_LEVEL, MAX_TEETH_LEVEL, MAX_CLAW_LEVEL
+from sporesimulator.game.utils.console import ConsoleFormatter
 
 
 class WorldState:
@@ -31,21 +32,21 @@ class Phase(ABC):
 
 class DummyEndingPhase(Phase):
     def start(self) -> None:
-        print("Simulation has ended.")
+        ConsoleFormatter.print_section_header("Simulation has ended", "=")
 
 
 class EvolutionPhase(Phase):
     def start(self) -> None:
-        print("Starting Evolution Phase.")
+        ConsoleFormatter.print_section_header("Starting Evolution Phase")
 
         random_predator = self.generate_random_character("Predator", 0)
         self.world.set_predator(random_predator)
-        print("Predator Evolved")
+        ConsoleFormatter.print_subheader("Predator Evolved")
         print(random_predator)
 
         random_prey = self.generate_random_character("Prey")
         self.world.set_prey(random_prey)
-        print("Prey Evolved")
+        ConsoleFormatter.print_subheader("Prey Evolved")
         print(random_prey)
 
         self.next_phase.start()
@@ -65,7 +66,7 @@ class EvolutionPhase(Phase):
 
 class ChasePhase(Phase):
     def start(self) -> None:
-        print("Starting Chase Phase.")
+        ConsoleFormatter.print_section_header("Starting Chase Phase.")
 
         pass
 
@@ -73,7 +74,7 @@ class ChasePhase(Phase):
 
 class FightPhase(Phase):
     def start(self) -> None:
-        print("Starting Fight Phase.")
+        ConsoleFormatter.print_section_header("Starting Fight Phase.")
 
         pass
 

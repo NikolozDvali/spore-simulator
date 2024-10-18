@@ -50,6 +50,7 @@ class CharacterBuilder:
     def build(self) -> Character:
 
         return Character(
+            name=self.name,
             position_manager=self.position_manager,
             stats_manager=self.stats_manager,
             appendage_manager=self.appendage_manager
