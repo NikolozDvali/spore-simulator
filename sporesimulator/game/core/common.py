@@ -6,6 +6,10 @@ class Entity(ABC):
 
 class Ability(ABC):
     @abstractmethod
+    def requires_stamina(self) -> int:
+        pass
+
+    @abstractmethod
     def uses_stamina(self) -> int:
         pass
 
