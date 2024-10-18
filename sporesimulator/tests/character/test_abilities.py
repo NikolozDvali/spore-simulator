@@ -50,3 +50,33 @@ def test_character_not_enough_stamina_to_fly():
     character = CharacterBuilder().with_position(10).with_stamina(80).with_wings(2).build()
     with pytest.raises(ValueError):
         character.move(Fly, Direction.RIGHT)
+
+def test_character_can_crawl():
+    character = CharacterBuilder().with_position(10).with_stamina(1).build()
+    character.move(Crawl, Direction.RIGHT)
+    assert character.position == 10 + Crawl.speed
+    assert character.stamina == 1 - Crawl.uses_stamina
+
+def test_character_can_hop():
+    character = CharacterBuilder().with_position(10).with_stamina(21).with_legs(1).build()
+    character.move(Hop, Direction.RIGHT)
+    assert character.position == 10 + Hop.speed
+    assert character.stamina == 21 - Hop.uses_stamina
+
+def test_character_can_walk():
+    character = CharacterBuilder().with_position(10).with_stamina(41).with_legs(2).build()
+    character.move(Walk, Direction.RIGHT)
+    assert character.position == 10 + Walk.speed
+    assert character.stamina == 41 - Walk.uses_stamina
+
+def test_character_can_run():
+    character = CharacterBuilder().with_position(10).with_stamina(61).with_legs(2).build()
+    character.move(Run, Direction.RIGHT)
+    assert character.position == 10 + Run.speed
+    assert character.stamina == 61 - Run.uses_stamina
+
+def test_character_can_fly():
+    character = CharacterBuilder().with_position(10).with_stamina(81).with_wings(2).build()
+    character.move(Fly, Direction.RIGHT)
+    assert character.position == 10 + Fly.speed
+    assert character.stamina == 81 - Fly.uses_stamina
