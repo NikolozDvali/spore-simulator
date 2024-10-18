@@ -3,7 +3,6 @@ from sporesimulator.game.core.common import Entity
 
 
 class Character(Entity):
-
     def __init__(self,
                  position_manager: PositionManager = PositionManager(),
                  stats_manager: CharacterStatsManager = CharacterStatsManager(),
@@ -11,6 +10,8 @@ class Character(Entity):
         self.position_manager = position_manager
         self.stats_manager = stats_manager
         self.appendage_manager = appendage_manager
+
+    """Common attribute getters"""
 
     @property
     def stamina(self):
@@ -28,6 +29,13 @@ class Character(Entity):
     def health(self) -> int:
         return self.stats_manager.health
 
+    """Common attribute setters"""
+
     @health.setter
-    def health(self, value):
-        self.stats_manager.health = value
+    def health(self, health: int) -> None:
+        self.stats_manager.health = health
+
+    """Common methods"""
+
+    def attack(self, victim: 'Character'):
+        victim.health -= self.attack_power
