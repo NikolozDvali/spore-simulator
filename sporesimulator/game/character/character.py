@@ -5,7 +5,7 @@ from sporesimulator.game.move.move import Move, Direction
 
 class Character:
     def __init__(self,
-                 name: str = "Creature",
+                 name: str | None = "Creature",
                  position_manager: PositionManager = PositionManager(),
                  stats_manager: CharacterStatsManager = CharacterStatsManager(),
                  appendage_manager: AppendageManager = AppendageManager()) -> None:

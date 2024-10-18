@@ -24,7 +24,7 @@ class CharacterBuilder:
         return self
 
     def with_attack_power(self, base_attack_power: int) -> Self:
-        self.stats_manager.attacking_power = base_attack_power
+        self.stats_manager.base_attack_power = base_attack_power
         return self
 
     def with_stamina(self, base_stamina: int) -> Self:

@@ -22,17 +22,17 @@ class WorldState:
         self.prey = prey
 
 class Phase(ABC):
-    def __init__(self, world_state: Optional[WorldState] = None, next_phase: Optional['Phase'] = None) -> None:
-        self.world: WorldState = world_state
-        self.next_phase = next_phase
+    def __init__(self, world_state: WorldState, next_phase: Optional['Phase'] = None) -> None:
+        self.world = world_state
+        self.next_phase = next_phase or NullPhase(world_state)
 
     def start(self) -> None:
         pass
 
 
-class DummyEndingPhase(Phase):
+class NullPhase(Phase):
     def start(self) -> None:
-        ConsoleFormatter.print_section_header("Simulation has ended", "=")
+        pass
 
 
 class EvolutionPhase(Phase):
@@ -49,7 +49,8 @@ class EvolutionPhase(Phase):
         ConsoleFormatter.print_subheader("Prey Evolved")
         print(random_prey)
 
-        self.next_phase.start()
+        if self.next_phase:
+            self.next_phase.start()
 
     def generate_random_character(self, name: str, position: int = random.randint(0, MAX_POSITION)) -> Character:
         return (CharacterBuilder()
@@ -70,7 +71,8 @@ class ChasePhase(Phase):
 
         pass
 
-        self.next_phase.start()
+        if self.next_phase:
+            self.next_phase.start()
 
 class FightPhase(Phase):
     def start(self) -> None:
@@ -78,13 +80,14 @@ class FightPhase(Phase):
 
         pass
 
-        self.next_phase.start()
+        if self.next_phase:
+            self.next_phase.start()
 
 
 class SporeGame:
     def __init__(self):
         self.state: WorldState = WorldState()
-        self.current_phase: Phase = EvolutionPhase(self.state, DummyEndingPhase(self.state))
+        self.current_phase: Phase = EvolutionPhase(self.state)
 
     def start(self):
         self.current_phase.start()
