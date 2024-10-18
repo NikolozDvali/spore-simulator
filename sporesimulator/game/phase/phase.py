@@ -24,15 +24,18 @@ class WorldState:
 class Phase(ABC):
     def __init__(self, world_state: WorldState, next_phase: Optional['Phase'] = None) -> None:
         self.world = world_state
-        self.next_phase = next_phase
+        self.next_phase = next_phase or NullPhase(world_state)
 
     def start(self) -> None:
         pass
 
 class NullPhase(Phase):
+    # noinspection PyMissingConstructor
     def __init__(self, world_state: WorldState):
-        super().__init__(world_state)  # Properly calling the superclass __init__
+        pass
 
+    def start(self) -> None:
+        pass  # Does nothing
 
 class EvolutionPhase(Phase):
     def start(self) -> None:
@@ -48,8 +51,7 @@ class EvolutionPhase(Phase):
         ConsoleFormatter.print_subheader("Prey Evolved")
         print(random_prey)
 
-        if self.next_phase:
-            self.next_phase.start()
+        self.next_phase.start()
 
     def generate_random_character(self, name: str, position: int = random.randint(0, MAX_POSITION)) -> Character:
         return (CharacterBuilder()
@@ -70,8 +72,7 @@ class ChasePhase(Phase):
 
         pass
 
-        if self.next_phase:
-            self.next_phase.start()
+        self.next_phase.start()
 
 class FightPhase(Phase):
     def start(self) -> None:
@@ -79,5 +80,4 @@ class FightPhase(Phase):
 
         pass
 
-        if self.next_phase:
-            self.next_phase.start()
+        self.next_phase.start()
