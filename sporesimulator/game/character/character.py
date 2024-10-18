@@ -11,15 +11,21 @@ class Character:
         self.stats_manager = stats_manager
         self.appendage_manager = appendage_manager
 
-    """Common attribute getters"""
-
     @property
     def stamina(self):
         return self.stats_manager.stamina
 
+    @stamina.setter
+    def stamina(self, stamina: int) -> None:
+        self.stats_manager.stamina = stamina
+
     @property
     def position(self) -> int:
         return self.position_manager.position
+
+    @position.setter
+    def position(self, new_position: int) -> None:
+        self.position_manager.position = new_position
 
     @property
     def attack_power(self) -> int:
@@ -29,28 +35,18 @@ class Character:
     def health(self) -> int:
         return self.stats_manager.health
 
-    """Common attribute setters"""
-
-    @position.setter
-    def position(self, new_position: int) -> None:
-        self.position_manager.position = new_position
-
     @health.setter
     def health(self, health: int) -> None:
         self.stats_manager.health = health
         if self.stats_manager.health <= 0:
             self.stats_manager.health = 0
 
-    @stamina.setter
-    def stamina(self, stamina: int) -> None:
-        self.stats_manager.stamina = stamina
-
     """Common methods"""
 
     def attack(self, victim: 'Character'):
         victim.health -= self.attack_power
 
-    def move(self, movement_protocol: type[Move], direction: Direction) -> object:
+    def move(self, movement_protocol: type[Move], direction: Direction):
         new_position = self.position + movement_protocol.speed * direction.value
 
         if not self.appendage_manager.supports_movement(movement_protocol):

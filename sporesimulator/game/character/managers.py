@@ -26,37 +26,33 @@ class AppendageManager:
         self.claws = claws if claws is not None else Claws()
         self.teeth = teeth if teeth is not None else Teeth()
 
-    """Common attribute getters"""
-
     @property
     def wing_count(self):
         return self.wings.count()
-
-    @property
-    def leg_count(self):
-        return self.legs.count()
-
-    @property
-    def teeth_level(self):
-        return self.teeth.level
-
-    @property
-    def claw_level(self):
-        return self.claws.level
-
-    """Common attribute setters"""
-
-    @leg_count.setter
-    def leg_count(self, count: int):
-        self.legs.count = count
 
     @wing_count.setter
     def wing_count(self, count: int):
         self.wings.count = count
 
+    @property
+    def leg_count(self):
+        return self.legs.count()
+
+    @leg_count.setter
+    def leg_count(self, count: int):
+        self.legs.count = count
+
+    @property
+    def teeth_level(self):
+        return self.teeth.level
+
     @teeth_level.setter
     def teeth_level(self, level: int):
         self.teeth.level = level
+
+    @property
+    def claw_level(self):
+        return self.claws.level
 
     @claw_level.setter
     def claw_level(self, level: int):
