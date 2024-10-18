@@ -31,8 +31,3 @@ class Character(Entity):
     @health.setter
     def health(self, value):
         self.stats_manager.health = value
-
-    def attack(self, victim: 'Character') -> None:
-        if victim.position != self.position:
-            raise ValueError("Cant attack on the distance")
-        victim.health -= self.attack_power
