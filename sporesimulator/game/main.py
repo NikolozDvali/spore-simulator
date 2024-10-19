@@ -1,10 +1,19 @@
-from sporesimulator.game.phase.phase import EvolutionPhase, WorldState, Phase
+from sporesimulator.game.phase.phase import EvolutionPhase, GameConfig, Phase, ChasePhase, FightPhase
 
 
 class SporeGame:
     def __init__(self):
-        self.state: WorldState = WorldState()
-        self.current_phase: Phase = EvolutionPhase(self.state)
+        self.config: GameConfig = GameConfig()
+        self.current_phase: Phase = EvolutionPhase(self.config, ChasePhase(self.config))
+
+    def setup_phases(self) -> Phase:
+        evolution_phase: Phase = EvolutionPhase(self.config)
+        chase_phase: Phase = ChasePhase(self.config)
+        fight_phase: Phase = FightPhase(self.config)
+
+        evolution_phase.next_phase = chase_phase
+        chase_phase.next_phase = fight_phase
+        return evolution_phase
 
     def start(self):
         self.current_phase.start()

@@ -7,13 +7,19 @@ from sporesimulator.game.character.character import Character
 from sporesimulator.game.core.constants import MIN_STAMINA, MAX_STAMINA, MIN_HEALTH, MAX_HEALTH, MAX_POSITION, \
     MIN_ATTACK_POWER, MAX_ATTACK_POWER, MAX_LEG_COUNT, MIN_LEG_COUNT, MIN_WING_COUNT, MAX_WING_COUNT, \
     MIN_CLAW_LEVEL, MIN_TEETH_LEVEL, MAX_TEETH_LEVEL, MAX_CLAW_LEVEL
+from sporesimulator.game.movement.move import MovementAgent, GreedyMovementAgent, Direction
 from sporesimulator.game.utils.console import ConsoleFormatter
 
 
-class WorldState:
-    def __init__(self, predator: Character | None = None, prey: Character | None = None):
+class GameConfig:
+    def __init__(self, predator: Character | None = None,
+                 prey: Character | None = None,
+                 predator_movement_agent: MovementAgent | None = GreedyMovementAgent(),
+                 prey_movement_agent: MovementAgent | None = GreedyMovementAgent()):
         self.predator: Character | None = predator
         self.prey: Character | None = prey
+        self.predator_movement_agent: MovementAgent = predator_movement_agent
+        self.prey_movement_agent: MovementAgent = prey_movement_agent
 
     def set_predator(self, predator: Character):
         self.predator = predator
@@ -22,16 +28,16 @@ class WorldState:
         self.prey = prey
 
 class Phase(ABC):
-    def __init__(self, world_state: WorldState, next_phase: Optional['Phase'] = None) -> None:
-        self.world = world_state
-        self.next_phase = next_phase or NullPhase(world_state)
+    def __init__(self, game_config: GameConfig, next_phase: Optional['Phase'] = None) -> None:
+        self.game_config = game_config
+        self.next_phase = next_phase or NullPhase(game_config)
 
     def start(self) -> None:
         pass
 
 class NullPhase(Phase):
     # noinspection PyMissingConstructor
-    def __init__(self, world_state: WorldState):
+    def __init__(self, game_config: GameConfig):
         pass
 
     def start(self) -> None:
@@ -42,12 +48,12 @@ class EvolutionPhase(Phase):
         ConsoleFormatter.print_section_header("Starting Evolution Phase")
 
         random_predator = self.generate_random_character("Predator", 0)
-        self.world.set_predator(random_predator)
+        self.game_config.set_predator(random_predator)
         ConsoleFormatter.print_subheader("Predator Evolved")
         print(random_predator)
 
         random_prey = self.generate_random_character("Prey")
-        self.world.set_prey(random_prey)
+        self.game_config.set_prey(random_prey)
         ConsoleFormatter.print_subheader("Prey Evolved")
         print(random_prey)
 
@@ -68,21 +74,34 @@ class EvolutionPhase(Phase):
 
 class ChasePhase(Phase):
     def start(self) -> None:
-        ConsoleFormatter.print_section_header("Starting Chase Phase.")
-        #
-        # predator = self.world.predator
-        # prey = self.world.prey
-        #
-        # while True:
-        #     if predator.stamina == 0:
-        #         print("Prey ran into infinity")
-        #         return
+        ConsoleFormatter.print_section_header("Starting Chase Phase")
+
+        while not self.predator_caught_prey():
+            if self.game_config.predator.stamina == 0:
+                print("Prey ran into infinity")
+                return
+
+            self.move_predator()
+            self.move_prey()
 
         self.next_phase.start()
 
+    def predator_caught_prey(self) -> bool:
+        return self.game_config.predator.position == self.game_config.prey.position
+
+    def move_predator(self) -> None:
+        next_move = self.game_config.predator_movement_agent.next_move(self.game_config.predator.get_available_move_protocols())
+        if next_move:
+            self.game_config.predator.move(next_move, Direction.RIGHT)
+
+    def move_prey(self) -> None:
+        next_move = self.game_config.prey_movement_agent.next_move(self.game_config.prey.get_available_move_protocols())
+        if next_move:
+            self.game_config.prey.move(next_move, Direction.RIGHT)
+
 class FightPhase(Phase):
     def start(self) -> None:
-        ConsoleFormatter.print_section_header("Starting Fight Phase.")
+        ConsoleFormatter.print_section_header("Starting Fight Phase")
 
         pass
 

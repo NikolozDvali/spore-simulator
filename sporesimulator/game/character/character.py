@@ -1,6 +1,6 @@
 from sporesimulator.game.character.managers import PositionManager, AppendageManager, CharacterStatsManager
-from sporesimulator.game.move import MOVE_PROTOCOLS
-from sporesimulator.game.move.move import Move, Direction
+from sporesimulator.game.movement import MOVE_PROTOCOLS
+from sporesimulator.game.movement.move import Move, Direction
 
 
 class Character:
@@ -30,7 +30,7 @@ class Character:
 
     def move(self, movement_protocol: type[Move], direction: Direction):
         if not self.can_move(movement_protocol, direction):
-            raise ValueError("Can not move the character")
+            raise ValueError("Can not movement the character")
         self.position_manager.move(self.position + movement_protocol.speed * direction.value)
         self.stats_manager.use_stamina(movement_protocol.uses_stamina, movement_protocol.requires_stamina)
 

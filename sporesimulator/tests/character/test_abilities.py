@@ -1,7 +1,7 @@
 import pytest
 
 from sporesimulator.game.character.builder import CharacterBuilder
-from sporesimulator.game.move.move import Crawl, Direction, Hop, Walk, Run, Fly
+from sporesimulator.game.movement.move import Crawl, Direction, Hop, Walk, Run, Fly
 
 
 def test_character_attack_character():

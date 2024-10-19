@@ -1,6 +1,6 @@
 from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth
 from sporesimulator.game.core.constants import DEFAULT_HEALTH, DEFAULT_STAMINA, DEFAULT_ATTACK_POWER
-from sporesimulator.game.move.move import Move
+from sporesimulator.game.movement.move import Move
 
 
 class PositionManager:
@@ -12,7 +12,7 @@ class PositionManager:
 
     def move(self, new_position: int) -> None:
         if new_position < 0:
-            raise ValueError("Can't move to negative position!")
+            raise ValueError("Can't movement to negative position!")
         self.position = new_position
 
     def __str__(self) -> str:

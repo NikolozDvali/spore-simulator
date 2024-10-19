@@ -1,6 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
+from typing import Protocol, List
 
 
 class Direction(Enum):
@@ -48,3 +49,12 @@ class Fly(Move):
     uses_stamina: int = 4
     speed: int = 8
 
+class MovementAgent(Protocol):
+    def next_move(self, possible_moves: List[type[Move]]) -> type[Move] | None:
+        pass
+
+class GreedyMovementAgent(MovementAgent):
+    def next_move(self, possible_moves: List[type[Move]]) -> type[Move] | None:
+        if not possible_moves:
+            return None
+        return max(possible_moves, key=lambda move: move.speed)
