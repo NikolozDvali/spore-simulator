@@ -1,4 +1,4 @@
-from sporesimulator.game.phase.phase import EvolutionPhase, GameConfig, Phase, ChasePhase, FightPhase
+from sporesimulator.game.process.phase import EvolutionPhase, GameConfig, Phase, ChasePhase, FightPhase
 
 
 class SporeGame:

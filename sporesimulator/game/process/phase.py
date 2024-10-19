@@ -8,24 +8,9 @@ from sporesimulator.game.core.constants import MIN_STAMINA, MAX_STAMINA, MIN_HEA
     MIN_ATTACK_POWER, MAX_ATTACK_POWER, MAX_LEG_COUNT, MIN_LEG_COUNT, MIN_WING_COUNT, MAX_WING_COUNT, \
     MIN_CLAW_LEVEL, MIN_TEETH_LEVEL, MAX_TEETH_LEVEL, MAX_CLAW_LEVEL, \
     DIFFERENCE_BETWEEN_PREDATOR_AND_PREY_STAMINA_MODIFIER
-from sporesimulator.game.movement.move import MovementAgent, GreedyMovementAgent, Direction
+from sporesimulator.game.movement.move import Direction
+from sporesimulator.game.process.game_config import GameConfig
 
-
-class GameConfig:
-    def __init__(self, predator: Character | None = None,
-                 prey: Character | None = None,
-                 predator_movement_agent: MovementAgent | None = GreedyMovementAgent(),
-                 prey_movement_agent: MovementAgent | None = GreedyMovementAgent()):
-        self.predator: Character | None = predator
-        self.prey: Character | None = prey
-        self.predator_movement_agent: MovementAgent = predator_movement_agent
-        self.prey_movement_agent: MovementAgent = prey_movement_agent
-
-    def set_predator(self, predator: Character):
-        self.predator = predator
-
-    def set_prey(self, prey: Character):
-        self.prey = prey
 
 class Phase(ABC):
     def __init__(self, game_config: GameConfig, next_phase: Optional['Phase'] = None) -> None:

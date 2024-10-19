@@ -1,7 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
-from typing import Protocol, List
+from typing import Protocol, List, runtime_checkable
 
 
 class Direction(Enum):
@@ -49,6 +49,7 @@ class Fly(Move):
     uses_stamina: int = 4
     speed: int = 8
 
+@runtime_checkable
 class MovementAgent(Protocol):
     def next_move(self, possible_moves: List[type[Move]]) -> type[Move] | None:
         pass
