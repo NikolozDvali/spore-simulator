@@ -1,5 +1,13 @@
-from sporesimulator.game.character.managers import AppendageManager, PositionManager, CharacterStatsManager
-from sporesimulator.game.core.constants import DEFAULT_HEALTH, DEFAULT_STAMINA, DEFAULT_ATTACK_POWER
+from sporesimulator.game.character.managers import (
+    AppendageManager,
+    PositionManager,
+    CharacterStatsManager,
+)
+from sporesimulator.game.core.constants import (
+    DEFAULT_HEALTH,
+    DEFAULT_STAMINA,
+    DEFAULT_ATTACK_POWER,
+)
 
 
 def test_empty_appendage_manager_str():
@@ -35,8 +43,10 @@ def test_non_empty_position_manager_str():
 
 def test_character_stats_manager_default_str():
     stats_manager = CharacterStatsManager()
-    assert str(
-        stats_manager) == f"Health: {DEFAULT_HEALTH}, Stamina: {DEFAULT_STAMINA}, Base Attack Power: {DEFAULT_ATTACK_POWER}"
+    assert (
+        str(stats_manager)
+        == f"Health: {DEFAULT_HEALTH}, Stamina: {DEFAULT_STAMINA}, Base Attack Power: {DEFAULT_ATTACK_POWER}"
+    )
 
 
 def test_character_stats_manager_with_appendages_str():
@@ -44,10 +54,13 @@ def test_character_stats_manager_with_appendages_str():
     appendage_manager = AppendageManager()
     appendage_manager.claw_level = 5
     appendage_manager.teeth_level = 3
-    expected_final_attack_power = stats_manager.calculate_attack_power(appendage_manager)
+    expected_final_attack_power = stats_manager.calculate_attack_power(
+        appendage_manager
+    )
     assert stats_manager.str_with_appendages(appendage_manager) == (
         f"Health: {DEFAULT_HEALTH}, Stamina: {DEFAULT_STAMINA}, Base Attack Power: {DEFAULT_ATTACK_POWER}, "
-        f"Final Attack Power: {expected_final_attack_power}")
+        f"Final Attack Power: {expected_final_attack_power}"
+    )
 
 
 def test_character_stats_manager_custom_values_str():
@@ -55,12 +68,18 @@ def test_character_stats_manager_custom_values_str():
     appendage_manager = AppendageManager()
     appendage_manager.claw_level = 5
     appendage_manager.teeth_level = 3
-    expected_final_attack_power = stats_manager.calculate_attack_power(appendage_manager)
+    expected_final_attack_power = stats_manager.calculate_attack_power(
+        appendage_manager
+    )
     assert stats_manager.str_with_appendages(appendage_manager) == (
         f"Health: 150, Stamina: 120, Base Attack Power: 20, "
-        f"Final Attack Power: {expected_final_attack_power}")
+        f"Final Attack Power: {expected_final_attack_power}"
+    )
 
 
 def test_character_stats_manager_no_appendage_manager_str():
     stats_manager = CharacterStatsManager()
-    assert str(stats_manager) == f"Health: {DEFAULT_HEALTH}, Stamina: {DEFAULT_STAMINA}, Base Attack Power: {DEFAULT_ATTACK_POWER}"
+    assert (
+        str(stats_manager)
+        == f"Health: {DEFAULT_HEALTH}, Stamina: {DEFAULT_STAMINA}, Base Attack Power: {DEFAULT_ATTACK_POWER}"
+    )

@@ -1,7 +1,11 @@
 from typing import Self
 
 from sporesimulator.game.character.character import Character
-from sporesimulator.game.character.managers import AppendageManager, CharacterStatsManager, PositionManager
+from sporesimulator.game.character.managers import (
+    AppendageManager,
+    CharacterStatsManager,
+    PositionManager,
+)
 
 
 class CharacterBuilder:
@@ -48,10 +52,9 @@ class CharacterBuilder:
         return self
 
     def build(self) -> Character:
-
         return Character(
             name=self.name,
             position_manager=self.position_manager,
             stats_manager=self.stats_manager,
-            appendage_manager=self.appendage_manager
+            appendage_manager=self.appendage_manager,
         )

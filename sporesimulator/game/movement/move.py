@@ -9,6 +9,7 @@ class Direction(Enum):
     NOWHERE = 0
     RIGHT = 1
 
+
 @dataclass
 class Move(ABC):
     requires_stamina: int
@@ -36,6 +37,7 @@ class Walk(Move):
     uses_stamina: int = 2
     speed: int = 4
 
+
 @dataclass
 class Run(Move):
     requires_stamina: int = 61
@@ -49,10 +51,12 @@ class Fly(Move):
     uses_stamina: int = 4
     speed: int = 8
 
+
 @runtime_checkable
 class MovementAgent(Protocol):
     def next_move(self, possible_moves: List[type[Move]]) -> type[Move] | None:
         pass
+
 
 class GreedyMovementAgent(MovementAgent):
     def next_move(self, possible_moves: List[type[Move]]) -> type[Move] | None:

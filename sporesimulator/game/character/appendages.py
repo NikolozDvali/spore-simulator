@@ -1,5 +1,6 @@
 from abc import ABC
 
+
 class Appendage(ABC):
     def __init__(self, attribute: int = 0):
         if attribute < 0:
@@ -12,6 +13,7 @@ class Appendage(ABC):
     def modify_attacking_power(self, attacking_power: int):
         pass
 
+
 class CountBasedAppendage(Appendage):
     @property
     def count(self):
@@ -21,6 +23,7 @@ class CountBasedAppendage(Appendage):
     def count(self, value: int):
         self.attribute = value
 
+
 class LevelBasedAppendage(Appendage):
     @property
     def level(self):
@@ -29,6 +32,7 @@ class LevelBasedAppendage(Appendage):
     @level.setter
     def level(self, value: int):
         self.attribute = value
+
 
 class Legs(CountBasedAppendage):
     def can_hop(self):
@@ -40,13 +44,16 @@ class Legs(CountBasedAppendage):
     def can_run(self):
         return self.count >= 2
 
+
 class Wings(CountBasedAppendage):
     def can_fly(self):
         return self.count >= 2
 
+
 class Claws(LevelBasedAppendage):
     def modify_attacking_power(self, attacking_power: int):
         return attacking_power * (min(self.level + 1, 4))
+
 
 class Teeth(LevelBasedAppendage):
     def modify_attacking_power(self, attacking_power: int):

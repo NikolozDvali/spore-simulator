@@ -1,5 +1,9 @@
 from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth
-from sporesimulator.game.core.constants import DEFAULT_HEALTH, DEFAULT_STAMINA, DEFAULT_ATTACK_POWER
+from sporesimulator.game.core.constants import (
+    DEFAULT_HEALTH,
+    DEFAULT_STAMINA,
+    DEFAULT_ATTACK_POWER,
+)
 from sporesimulator.game.movement.move import Move
 
 
@@ -18,12 +22,15 @@ class PositionManager:
     def __str__(self) -> str:
         return str(self.position)
 
+
 class AppendageManager:
-    def __init__(self,
-                 legs: Legs | None = None,
-                 wings: Wings | None = None,
-                 claws: Claws | None = None,
-                 teeth: Teeth | None = None):
+    def __init__(
+        self,
+        legs: Legs | None = None,
+        wings: Wings | None = None,
+        claws: Claws | None = None,
+        teeth: Teeth | None = None,
+    ):
         self.legs = legs if legs is not None else Legs()
         self.wings = wings if wings is not None else Wings()
         self.claws = claws if claws is not None else Claws()
@@ -66,15 +73,14 @@ class AppendageManager:
     def supports_movement(self, move_protocol: type[Move]):
         move_type = move_protocol.__name__.lower()
         move_methods = {
-            'crawl': lambda: True,
-            'hop': self.legs.can_hop,
-            'walk': self.legs.can_walk,
-            'run': self.legs.can_run,
-            'fly': self.wings.can_fly,
+            "crawl": lambda: True,
+            "hop": self.legs.can_hop,
+            "walk": self.legs.can_walk,
+            "run": self.legs.can_run,
+            "fly": self.wings.can_fly,
         }
 
         return move_methods.get(move_type, lambda: False)()
-
 
     def __str__(self) -> str:
         appendages_info = []
@@ -87,14 +93,16 @@ class AppendageManager:
         if self.claw_level > 0:
             appendages_info.append(f"Claw level: {self.claw_level}")
 
-
         return ", ".join(appendages_info) if appendages_info else "No appendages"
 
+
 class CharacterStatsManager:
-    def __init__(self,
-                 health: int = DEFAULT_HEALTH,
-                 stamina: int = DEFAULT_STAMINA,
-                 base_attack_power: int = DEFAULT_ATTACK_POWER) -> None:
+    def __init__(
+        self,
+        health: int = DEFAULT_HEALTH,
+        stamina: int = DEFAULT_STAMINA,
+        base_attack_power: int = DEFAULT_ATTACK_POWER,
+    ) -> None:
         self._health = health
         self.stamina = stamina
         self.base_attack_power = base_attack_power
@@ -123,11 +131,12 @@ class CharacterStatsManager:
             attack_power = appendage_manager.claws.modify_attacking_power(attack_power)
         return attack_power
 
-
     def __str__(self) -> str:
-        base_info = (f"Health: {self.health}, "
-                     f"Stamina: {self.stamina}, "
-                     f"Base Attack Power: {self.base_attack_power}")
+        base_info = (
+            f"Health: {self.health}, "
+            f"Stamina: {self.stamina}, "
+            f"Base Attack Power: {self.base_attack_power}"
+        )
         return base_info
 
     def str_with_appendages(self, appendage_manager: AppendageManager) -> str:
