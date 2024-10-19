@@ -9,7 +9,6 @@ from sporesimulator.game.core.constants import MIN_STAMINA, MAX_STAMINA, MIN_HEA
     MIN_CLAW_LEVEL, MIN_TEETH_LEVEL, MAX_TEETH_LEVEL, MAX_CLAW_LEVEL, \
     DIFFERENCE_BETWEEN_PREDATOR_AND_PREY_STAMINA_MODIFIER
 from sporesimulator.game.movement.move import MovementAgent, GreedyMovementAgent, Direction
-from sporesimulator.game.utils.console import ConsoleFormatter
 
 
 class GameConfig:
@@ -46,17 +45,15 @@ class NullPhase(Phase):
 
 class EvolutionPhase(Phase):
     def start(self) -> None:
-        ConsoleFormatter.print_section_header("Starting Evolution Phase")
+        print("--- Starting Evolution Phase ---")
 
         random_predator = self.generate_random_character("Predator", is_predator=True)
         self.game_config.set_predator(random_predator)
-        ConsoleFormatter.print_subheader("Predator Evolved")
-        print(random_predator)
+        print(f"Predator Evolved:\n{random_predator}")
 
         random_prey = self.generate_random_character("Prey", is_predator=False)
         self.game_config.set_prey(random_prey)
-        ConsoleFormatter.print_subheader("Prey Evolved")
-        print(random_prey)
+        print(f"Prey Evolved:\n{random_prey}\n")
 
         self.next_phase.start()
 
@@ -84,16 +81,17 @@ class EvolutionPhase(Phase):
 
 class ChasePhase(Phase):
     def start(self) -> None:
-        ConsoleFormatter.print_section_header("Starting Chase Phase")
+        print("--- Starting Chase Phase ---")
 
         while not self.predator_caught_prey():
             if self.game_config.predator.stamina == 0:
-                print("Prey ran into infinity")
+                print("Prey ran into infinity!")
                 return
 
             self.move_predator()
             self.move_prey()
 
+        print("Predator caught prey!\n")
         self.next_phase.start()
 
     def predator_caught_prey(self) -> bool:
@@ -111,7 +109,7 @@ class ChasePhase(Phase):
 
 class FightPhase(Phase):
     def start(self) -> None:
-        ConsoleFormatter.print_section_header("Starting Fight Phase")
+        print("--- Starting Fight Phase ---")
 
         pass
 

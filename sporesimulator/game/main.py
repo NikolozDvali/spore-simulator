@@ -4,7 +4,7 @@ from sporesimulator.game.phase.phase import EvolutionPhase, GameConfig, Phase, C
 class SporeGame:
     def __init__(self):
         self.config: GameConfig = GameConfig()
-        self.current_phase: Phase = EvolutionPhase(self.config, ChasePhase(self.config))
+        self.current_phase: Phase = self.setup_phases()
 
     def setup_phases(self) -> Phase:
         evolution_phase: Phase = EvolutionPhase(self.config)

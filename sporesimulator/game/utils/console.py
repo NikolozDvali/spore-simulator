@@ -1,21 +1,16 @@
-import shutil
-
-
 class ConsoleFormatter:
-    MAX_LENGTH = shutil.get_terminal_size().columns
-
     @staticmethod
-    def print_section_header(message: str, character: str = "=") -> None:
-        formatted_message = message.center(ConsoleFormatter.MAX_LENGTH)
-        line = character * ConsoleFormatter.MAX_LENGTH
-        print(line)
-        print(formatted_message)
-        print(line)
+    def print_section_header(message: str) -> None:
+        # Using asterisks for a clean look
+        border = "*" * (len(message) + 4)
+        print(border)
+        print(f"* {message} *")
+        print(border)
 
     @staticmethod
     def print_subheader(message: str) -> None:
-        formatted_message = message.center(ConsoleFormatter.MAX_LENGTH)
-        line = "-" * ConsoleFormatter.MAX_LENGTH
-        print(line)
-        print(formatted_message)
-        print(line)
+        # Using dashes for subheader
+        border = "-" * (len(message) + 4)
+        print(border)
+        print(f"| {message} |")
+        print(border)
