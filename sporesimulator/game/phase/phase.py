@@ -6,7 +6,8 @@ from sporesimulator.game.character.builder import CharacterBuilder
 from sporesimulator.game.character.character import Character
 from sporesimulator.game.core.constants import MIN_STAMINA, MAX_STAMINA, MIN_HEALTH, MAX_HEALTH, MAX_POSITION, \
     MIN_ATTACK_POWER, MAX_ATTACK_POWER, MAX_LEG_COUNT, MIN_LEG_COUNT, MIN_WING_COUNT, MAX_WING_COUNT, \
-    MIN_CLAW_LEVEL, MIN_TEETH_LEVEL, MAX_TEETH_LEVEL, MAX_CLAW_LEVEL
+    MIN_CLAW_LEVEL, MIN_TEETH_LEVEL, MAX_TEETH_LEVEL, MAX_CLAW_LEVEL, \
+    DIFFERENCE_BETWEEN_PREDATOR_AND_PREY_STAMINA_MODIFIER
 from sporesimulator.game.movement.move import MovementAgent, GreedyMovementAgent, Direction
 from sporesimulator.game.utils.console import ConsoleFormatter
 
@@ -47,22 +48,31 @@ class EvolutionPhase(Phase):
     def start(self) -> None:
         ConsoleFormatter.print_section_header("Starting Evolution Phase")
 
-        random_predator = self.generate_random_character("Predator", 0)
+        random_predator = self.generate_random_character("Predator", is_predator=True)
         self.game_config.set_predator(random_predator)
         ConsoleFormatter.print_subheader("Predator Evolved")
         print(random_predator)
 
-        random_prey = self.generate_random_character("Prey")
+        random_prey = self.generate_random_character("Prey", is_predator=False)
         self.game_config.set_prey(random_prey)
         ConsoleFormatter.print_subheader("Prey Evolved")
         print(random_prey)
 
         self.next_phase.start()
 
-    def generate_random_character(self, name: str, position: int = random.randint(0, MAX_POSITION)) -> Character:
+    def generate_random_character(self, name: str, is_predator: bool = False) -> Character:
+        if is_predator:
+            stamina_min = MIN_STAMINA + DIFFERENCE_BETWEEN_PREDATOR_AND_PREY_STAMINA_MODIFIER
+            stamina_max = MAX_STAMINA + DIFFERENCE_BETWEEN_PREDATOR_AND_PREY_STAMINA_MODIFIER
+            position = 0
+        else:
+            stamina_min = MIN_STAMINA
+            stamina_max = MAX_STAMINA
+            position = random.randint(0, MAX_POSITION)
+
         return (CharacterBuilder()
                 .with_name(name)
-                .with_stamina(random.randint(MIN_STAMINA, MAX_STAMINA))
+                .with_stamina(random.randint(stamina_min, stamina_max))
                 .with_health(random.randint(MIN_HEALTH, MAX_HEALTH))
                 .with_attack_power(random.randint(MIN_ATTACK_POWER, MAX_ATTACK_POWER))
                 .with_position(position)

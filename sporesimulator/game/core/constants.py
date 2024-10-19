@@ -3,6 +3,10 @@ DEFAULT_ATTACK_POWER = 10
 DEFAULT_STAMINA = 100
 DEFAULT_POSITION = 0
 
+# If both have about the same stamina, prey will most likely ran to infinity.
+# So, lets make stuff more interesting :)
+DIFFERENCE_BETWEEN_PREDATOR_AND_PREY_STAMINA_MODIFIER = 300
+
 MIN_POSITION = 0
 MAX_POSITION = 1000
 
