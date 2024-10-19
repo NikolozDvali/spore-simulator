@@ -1,9 +1,9 @@
-from sporesimulator.game.character.managers import (
+from game.character.managers import (
     AppendageManager,
     PositionManager,
     CharacterStatsManager,
 )
-from sporesimulator.game.core.constants import (
+from game.core.constants import (
     DEFAULT_HEALTH,
     DEFAULT_STAMINA,
     DEFAULT_ATTACK_POWER,

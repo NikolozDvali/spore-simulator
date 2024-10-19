@@ -1,4 +1,4 @@
-from sporesimulator.game.movement.move import (
+from game.movement.move import (
     GreedyMovementAgent,
     Crawl,
     Hop,

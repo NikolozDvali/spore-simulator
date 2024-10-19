@@ -2,9 +2,9 @@ import random
 from abc import ABC
 from typing import Optional
 
-from sporesimulator.game.character.builder import CharacterBuilder
-from sporesimulator.game.character.character import Character
-from sporesimulator.game.core.constants import (
+from game.character.builder import CharacterBuilder
+from game.character.character import Character
+from game.core.constants import (
     MIN_STAMINA,
     MAX_STAMINA,
     MIN_HEALTH,
@@ -22,8 +22,8 @@ from sporesimulator.game.core.constants import (
     MAX_CLAW_LEVEL,
     DIFFERENCE_BETWEEN_PREDATOR_AND_PREY_STAMINA_MODIFIER,
 )
-from sporesimulator.game.movement.move import Direction
-from sporesimulator.game.process.game_config import GameConfig
+from game.movement.move import Direction
+from game.process.game_config import GameConfig
 
 
 class Phase(ABC):

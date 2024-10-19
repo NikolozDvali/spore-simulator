@@ -1,8 +1,8 @@
 import pytest
 
-from sporesimulator.game.character.builder import CharacterBuilder
-from sporesimulator.game.movement.move import MovementAgent
-from sporesimulator.game.process.phase import GameConfig
+from game.character.builder import CharacterBuilder
+from game.movement.move import MovementAgent
+from game.process.game_config import GameConfig
 
 
 @pytest.fixture

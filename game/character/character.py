@@ -1,10 +1,10 @@
-from sporesimulator.game.character.managers import (
+from game.character.managers import (
     PositionManager,
     AppendageManager,
     CharacterStatsManager,
 )
-from sporesimulator.game.movement import MOVE_PROTOCOLS
-from sporesimulator.game.movement.move import Move, Direction
+from game.movement import MOVE_PROTOCOLS
+from game.movement.move import Move, Direction
 
 
 class Character:

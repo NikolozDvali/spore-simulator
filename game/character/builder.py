@@ -1,7 +1,7 @@
 from typing import Self
 
-from sporesimulator.game.character.character import Character
-from sporesimulator.game.character.managers import (
+from game.character.character import Character
+from game.character.managers import (
     AppendageManager,
     CharacterStatsManager,
     PositionManager,

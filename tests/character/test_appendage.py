@@ -1,6 +1,6 @@
 import pytest
 
-from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth
+from game.character.appendages import Legs, Wings, Claws, Teeth
 
 """=========================LEGS============================="""
 

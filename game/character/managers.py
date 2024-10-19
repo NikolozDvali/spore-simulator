@@ -1,10 +1,10 @@
-from sporesimulator.game.character.appendages import Legs, Wings, Claws, Teeth
-from sporesimulator.game.core.constants import (
+from game.character.appendages import Legs, Wings, Claws, Teeth
+from game.core.constants import (
     DEFAULT_HEALTH,
     DEFAULT_STAMINA,
     DEFAULT_ATTACK_POWER,
 )
-from sporesimulator.game.movement.move import Move
+from game.movement.move import Move
 
 
 class PositionManager:

@@ -1,6 +1,6 @@
-from sporesimulator.game.character.builder import CharacterBuilder
-from sporesimulator.game.character.character import Character
-from sporesimulator.game.movement.move import MovementAgent, GreedyMovementAgent
+from game.character.builder import CharacterBuilder
+from game.character.character import Character
+from game.movement.move import MovementAgent, GreedyMovementAgent
 
 
 class GameConfig:
