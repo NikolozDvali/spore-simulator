@@ -41,7 +41,7 @@ class NullPhase(Phase):
         pass
 
     def start(self) -> None:
-        pass  # Does nothing
+        print("\n--- All phases ended ---")
 
 class EvolutionPhase(Phase):
     def start(self) -> None:
@@ -85,7 +85,7 @@ class ChasePhase(Phase):
 
         while not self.predator_caught_prey():
             if self.game_config.predator.stamina == 0:
-                print("Prey ran into infinity!")
+                print("Prey ran into infinity")
                 return
 
             self.move_predator()
@@ -111,6 +111,17 @@ class FightPhase(Phase):
     def start(self) -> None:
         print("--- Starting Fight Phase ---")
 
-        pass
+        predator = self.game_config.predator
+        prey = self.game_config.prey
+
+        while True:
+            predator.attack(prey)
+            if prey.health == 0:
+                print("Some R-rated things have happened")
+                break
+            prey.attack(predator)
+            if predator.health == 0:
+                print("Prey ran into infinity")
+                break
 
         self.next_phase.start()
