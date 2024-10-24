@@ -106,7 +106,7 @@ class ChasePhase(Phase):
         self.next_phase.start()
 
     def predator_caught_prey(self) -> bool:
-        return self.game_config.predator.position == self.game_config.prey.position
+        return self.game_config.predator.position >= self.game_config.prey.position
 
     def move_predator(self) -> None:
         next_move = self.game_config.predator_movement_agent.next_move(
