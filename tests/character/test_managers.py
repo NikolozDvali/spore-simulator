@@ -10,12 +10,12 @@ from game.core.constants import (
 )
 
 
-def test_empty_appendage_manager_str():
+def test_empty_appendage_manager_str() -> None:
     appendage_manager = AppendageManager()
     assert str(appendage_manager) == "No appendages"
 
 
-def test_non_empty_appendage_manager_str():
+def test_non_empty_appendage_manager_str() -> None:
     appendage_manager = AppendageManager()
     appendage_manager.leg_count = 1
     appendage_manager.wing_count = 2
@@ -24,24 +24,24 @@ def test_non_empty_appendage_manager_str():
     assert str(appendage_manager) == "1 legs, 2 wings, Teeth level: 3, Claw level: 4"
 
 
-def test_some_appendages_appendage_manager_str():
+def test_some_appendages_appendage_manager_str() -> None:
     appendage_manager = AppendageManager()
     appendage_manager.leg_count = 1
     appendage_manager.claw_level = 4
     assert str(appendage_manager) == "1 legs, Claw level: 4"
 
 
-def test_empty_position_manager_str():
+def test_empty_position_manager_str() -> None:
     position_manager = PositionManager()
     assert str(position_manager) == "0"
 
 
-def test_non_empty_position_manager_str():
+def test_non_empty_position_manager_str() -> None:
     position_manager = PositionManager(15)
     assert str(position_manager) == "15"
 
 
-def test_character_stats_manager_default_str():
+def test_character_stats_manager_default_str() -> None:
     stats_manager = CharacterStatsManager()
     assert (
         str(stats_manager)
@@ -49,7 +49,7 @@ def test_character_stats_manager_default_str():
     )
 
 
-def test_character_stats_manager_with_appendages_str():
+def test_character_stats_manager_with_appendages_str() -> None:
     stats_manager = CharacterStatsManager()
     appendage_manager = AppendageManager()
     appendage_manager.claw_level = 5
@@ -63,7 +63,7 @@ def test_character_stats_manager_with_appendages_str():
     )
 
 
-def test_character_stats_manager_custom_values_str():
+def test_character_stats_manager_custom_values_str() -> None:
     stats_manager = CharacterStatsManager(health=150, stamina=120, base_attack_power=20)
     appendage_manager = AppendageManager()
     appendage_manager.claw_level = 5
@@ -77,7 +77,7 @@ def test_character_stats_manager_custom_values_str():
     )
 
 
-def test_character_stats_manager_no_appendage_manager_str():
+def test_character_stats_manager_no_appendage_manager_str() -> None:
     stats_manager = CharacterStatsManager()
     assert (
         str(stats_manager)

@@ -3,7 +3,7 @@ from game.process.phase import Phase, EvolutionPhase, ChasePhase, FightPhase
 
 
 class SporeGame:
-    def __init__(self):
+    def __init__(self) -> None:
         self.config: GameConfig = GameConfig()
         self.current_phase: Phase = self.setup_phases()
 
@@ -16,7 +16,7 @@ class SporeGame:
         chase_phase.next_phase = fight_phase
         return evolution_phase
 
-    def start(self):
+    def start(self) -> None:
         self.current_phase.start()
 
 

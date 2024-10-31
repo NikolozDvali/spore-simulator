@@ -9,11 +9,11 @@ from game.character.managers import (
 
 
 class CharacterBuilder:
-    def __init__(self):
+    def __init__(self) -> None:
         self.position_manager = PositionManager()
         self.stats_manager = CharacterStatsManager()
         self.appendage_manager = AppendageManager()
-        self.name = None
+        self.name: str | None = None
 
     def with_name(self, name: str) -> Self:
         self.name = name

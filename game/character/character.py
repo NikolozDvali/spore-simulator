@@ -22,10 +22,10 @@ class Character:
 
     """Common methods"""
 
-    def attack(self, victim: "Character"):
+    def attack(self, victim: "Character") -> None:
         victim.health -= self.attack_power
 
-    def can_move(self, movement_protocol: type[Move], direction: Direction):
+    def can_move(self, movement_protocol: type[Move], direction: Direction) -> bool:
         if not self.appendage_manager.supports_movement(movement_protocol):
             return False
         if not self.stats_manager.can_use_stamina(movement_protocol.requires_stamina):
@@ -36,7 +36,7 @@ class Character:
             return False
         return True
 
-    def move(self, movement_protocol: type[Move], direction: Direction):
+    def move(self, movement_protocol: type[Move], direction: Direction) -> None:
         if not self.can_move(movement_protocol, direction):
             raise ValueError("Can not movement the character")
         self.position_manager.move(
@@ -55,7 +55,7 @@ class Character:
 
     """Helper methods"""
 
-    def __getattr__(self, attr_name: str):
+    def __getattr__(self, attr_name: str) -> int:
         stats_attributes = {
             "stamina": self.stats_manager.stamina,
             "health": self.stats_manager.health,
@@ -69,7 +69,7 @@ class Character:
         else:
             raise AttributeError(f"{attr_name} is not a valid attribute")
 
-    def __setattr__(self, attr_name: str, value):
+    def __setattr__(self, attr_name: str, value: int) -> None:
         if attr_name in ["stamina", "health"]:
             self.stats_manager.__setattr__(attr_name, value)
         elif attr_name == "position":
@@ -77,7 +77,7 @@ class Character:
         else:
             object.__setattr__(self, attr_name, value)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"   Creature name: {self.name}\n"
             f"   Position: {str(self.position_manager)}\n"

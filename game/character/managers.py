@@ -37,40 +37,40 @@ class AppendageManager:
         self.teeth = teeth if teeth is not None else Teeth()
 
     @property
-    def wing_count(self):
+    def wing_count(self) -> int:
         return self.wings.count
 
     @wing_count.setter
-    def wing_count(self, count: int):
+    def wing_count(self, count: int) -> None:
         self.wings.count = count
 
     @property
-    def leg_count(self):
+    def leg_count(self) -> int:
         return self.legs.count
 
     @leg_count.setter
-    def leg_count(self, count: int):
+    def leg_count(self, count: int) -> None:
         self.legs.count = count
 
     @property
-    def teeth_level(self):
+    def teeth_level(self) -> int:
         return self.teeth.level
 
     @teeth_level.setter
-    def teeth_level(self, level: int):
+    def teeth_level(self, level: int) -> None:
         self.teeth.level = level
 
     @property
-    def claw_level(self):
+    def claw_level(self) -> int:
         return self.claws.level
 
     @claw_level.setter
-    def claw_level(self, level: int):
+    def claw_level(self, level: int) -> None:
         self.claws.level = level
 
     """Movement check"""
 
-    def supports_movement(self, move_protocol: type[Move]):
+    def supports_movement(self, move_protocol: type[Move]) -> bool:
         move_type = move_protocol.__name__.lower()
         move_methods = {
             "crawl": lambda: True,
@@ -108,11 +108,11 @@ class CharacterStatsManager:
         self.base_attack_power = base_attack_power
 
     @property
-    def health(self):
+    def health(self) -> int:
         return self._health
 
     @health.setter
-    def health(self, new_health: int):
+    def health(self, new_health: int) -> None:
         self._health = max(0, new_health)
 
     def can_use_stamina(self, required_stamina: int) -> bool:

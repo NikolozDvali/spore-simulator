@@ -22,8 +22,8 @@ class GameConfig:
             prey_movement_agent if prey_movement_agent else GreedyMovementAgent()
         )
 
-    def set_predator(self, predator: Character):
+    def set_predator(self, predator: Character) -> None:
         self.predator = predator
 
-    def set_prey(self, prey: Character):
+    def set_prey(self, prey: Character) -> None:
         self.prey = prey
